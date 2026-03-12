@@ -146,6 +146,8 @@ tr:last-child td{border-bottom:none;}
 .dot-mini.g{background:var(--g);} .dot-mini.y{background:var(--y);} .dot-mini.r{background:var(--r);} .dot-mini.n{background:var(--bo);}
 .view-btn{padding:5px 12px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.3);border-radius:8px;color:var(--ac);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;}
 .view-btn:hover{background:rgba(14,165,233,.25);}
+.del-btn{padding:5px 10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;transition:background .2s;}
+.del-btn:hover{background:rgba(248,113,113,.28);}
 .eadm{padding:60px;text-align:center;color:var(--mu);font-size:14px;}
 
 /* ── MODAL ── */
@@ -358,8 +360,7 @@ function personStats(rows){
     else if(r2.status==='red')r++;
     else n++;
   });
-  const answered=g+y+r;
-  return {g,y,r,n,total:answered,skipped:n};
+  return {g,y,r,n,total:rows.length};
 }
 
 /* ══ ADMIN LOCK ══ */
@@ -397,11 +398,11 @@ function buildGrid(){
 
 function refreshDisplay(){
   const persons = getPersons();
-  const total = submissions.filter(s=>s.status!=='').length;
+  const total = submissions.length;
   const people = persons.length;
   // "complete" = person who answered all sub-questions
   const totalSubs = MATRIX.reduce((a,c)=>a+c.subs.length,0);
-  const done = persons.filter(p=>p.rows.filter(r=>r.status!=='').length>=totalSubs).length;
+  const done = persons.filter(p=>p.rows.length>=totalSubs).length;
 
   document.getElementById('dvTotal').textContent=total;
   document.getElementById('dvPeople').textContent=people;
@@ -415,14 +416,14 @@ function refreshDisplay(){
   document.getElementById('dvDepts').innerHTML=Object.entries(dm).map(([d,n])=>`<div class="dchip">${d}<span>${n}</span></div>`).join('');
 
   MATRIX.forEach(cat=>{
-    const cs=submissions.filter(s=>s.cat===cat.id&&s.status!=='');
+    const cs=submissions.filter(s=>s.cat===cat.id);
     const ne=document.getElementById('mn-'+cat.id);
     const ce=document.getElementById('mc-'+cat.id);
     if(ne)ne.textContent=cs.length;
     if(ce)ce.classList.toggle('act',cs.length>0);
     cat.subs.forEach(sub=>{
       const e=document.getElementById(`msc-${cat.id}-${sub.id}`);
-      if(e)e.textContent=cs.filter(s=>s.sub===sub.id&&s.status!=='').length;
+      if(e)e.textContent=cs.filter(s=>s.sub===sub.id).length;
     });
   });
 }
@@ -584,9 +585,12 @@ function renderAdmin(){
       <td><div class="pname">${p.vorname} ${p.nachname}</div><div class="parea">${p.area}</div></td>
       <td style="color:var(--mu);font-size:12px">${p.area}</td>
       <td style="color:var(--mu);font-size:12px">${p.time}</td>
-      <td style="font-size:12px;color:var(--tx)">${st.total}<span style="color:var(--mu);font-size:11px"> / ${st.total+st.skipped}</span></td>
+      <td style="font-size:12px;color:var(--tx)">${st.total} Antworten</td>
       <td><div class="dots-row">${dotsHtml}</div><div style="font-size:10px;color:var(--mu);margin-top:4px">${st.g}✅ ${st.y}🟡 ${st.r}❌</div></td>
-      <td><button class="view-btn" onclick="openModal('${p.sessionId}');event.stopPropagation()">Details →</button></td>
+      <td style="display:flex;gap:6px;align-items:center;">
+        <button class="view-btn" onclick="openModal('${p.sessionId}');event.stopPropagation()">Details →</button>
+        <button class="del-btn" onclick="deletePerson('${p.sessionId}');event.stopPropagation()">🗑</button>
+      </td>
     </tr>`;
   }).join('');
 }
@@ -804,6 +808,18 @@ function exportXLSX(){
   XLSX.utils.book_append_sheet(wb,ws2,'Rohdaten');
 
   XLSX.writeFile(wb,'Zirkularitaet_Summit_Matrix.xlsx');
+}
+
+function deletePerson(sessionId){
+  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
+  submissions = submissions.filter(s => {
+    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
+    return key !== sessionId;
+  });
+  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+  syncToCloud();
+  refreshDisplay();
+  renderAdmin();
 }
 
 function clearAll(){
