@@ -148,6 +148,8 @@ tr:last-child td{border-bottom:none;}
 .view-btn:hover{background:rgba(14,165,233,.25);}
 .del-btn{padding:5px 10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;transition:background .2s;}
 .del-btn:hover{background:rgba(248,113,113,.28);}
+.del-btn{padding:5px 10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;transition:background .2s;}
+.del-btn:hover{background:rgba(248,113,113,.28);}
 .eadm{padding:60px;text-align:center;color:var(--mu);font-size:14px;}
 
 /* ── MODAL ── */
@@ -819,7 +821,19 @@ function deletePerson(sessionId){
     return key !== sessionId;
   });
   localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-  pushToCloud(submissions); // direct write — no re-merge so deleted person stays deleted
+  syncToCloud();
+  refreshDisplay();
+  renderAdmin();
+}
+
+function deletePerson(sessionId){
+  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
+  submissions = submissions.filter(s => {
+    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
+    return key !== sessionId;
+  });
+  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+  pushToCloud(submissions);
   refreshDisplay();
   renderAdmin();
 }
@@ -828,7 +842,7 @@ function clearAll(){
   if(!confirm('Wirklich alle Eingaben löschen?'))return;
   submissions=[];
   localStorage.removeItem('zirk_v3');
-  pushToCloud([]); // wipe cloud too
+  pushToCloud([]);
   refreshDisplay();
   renderAdmin();
 }
@@ -856,28 +870,32 @@ function showView(id){
    5. Go to API Keys (top menu) → copy your Access Key
    6. Paste both below and re-upload index.html to GitHub
 ═══════════════════════════════════════════════════════════════ */
-const JSONBIN_ID  = '69b2e33bc3097a1dd51cf301';
+const JSONBIN_ID  = '69b2d637b7ec241ddc621d3b';
 const JSONBIN_KEY = '$2a$10$rm/U1kJKLBu3VgxKZQsx7.kbyvQPRDSjVqi382NUN1WoKfm1G801m';
 
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 
 /* ══ SYNC ══ */
+async function pushToCloud(data){
+  if(!JSONBIN_ID||!JSONBIN_KEY) return;
+  try {
+    await fetch(JSONBIN_URL,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Versioning':'false'},
+      body:JSON.stringify(Array.isArray(data)?data:[])
+    });
+  } catch(e){ console.warn('Push failed:',e); }
+}
+
 async function syncToCloud(){
-  // For new submissions: fetch + merge + push
+  // push new submissions to JSONBin
   if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
   try {
+    // fetch latest first to merge
     const latest = await fetchRemote();
     const merged = mergeSessions(latest, submissions);
     submissions = merged;
     localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-    await pushToCloud(submissions);
-  } catch(e){ console.warn('Sync failed:', e); }
-}
-
-async function pushToCloud(data){
-  // Direct write — used for deletions (no merge, overwrites cloud with local state)
-  if(!JSONBIN_ID||!JSONBIN_KEY) return;
-  try {
     await fetch(JSONBIN_URL, {
       method: 'PUT',
       headers: {
@@ -885,9 +903,9 @@ async function pushToCloud(data){
         'X-Master-Key': JSONBIN_KEY,
         'X-Bin-Versioning': 'false'
       },
-      body: JSON.stringify(Array.isArray(data) ? data : [])
+      body: JSON.stringify(Array.isArray(merged) ? merged : [])
     });
-  } catch(e){ console.warn('Push failed:', e); }
+  } catch(e){ console.warn('Sync failed:', e); }
 }
 
 async function fetchRemote(){
