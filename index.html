@@ -835,7 +835,7 @@ function showView(id){
    6. Paste both below and re-upload index.html to GitHub
 ═══════════════════════════════════════════════════════════════ */
 const JSONBIN_ID  = '69b2d637b7ec241ddc621d3b';
-const JSONBIN_KEY = '$2a$10$21yEXI9A3ci1zbPy3Jbox.QKFYNUpYtvswlEMq04JdSPCCWQW062u';
+const JSONBIN_KEY = '$2a$10$rm/U1kJKLBu3VgxKZQsx7.kbyvQPRDSjVqi382NUN1WoKfm1G801m';
 
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 
@@ -856,7 +856,7 @@ async function syncToCloud(){
         'X-Master-Key': JSONBIN_KEY,
         'X-Bin-Versioning': 'false'
       },
-      body: JSON.stringify(merged)
+      body: JSON.stringify(Array.isArray(merged) ? merged : [])
     });
   } catch(e){ console.warn('Sync failed:', e); }
 }
@@ -868,8 +868,11 @@ async function fetchRemote(){
       headers: {'X-Master-Key': JSONBIN_KEY}
     });
     const data = await res.json();
-    return Array.isArray(data.record) ? data.record : [];
-  } catch(e){ return submissions; }
+    // Handle both formats: plain array [] or object {submissions:[]}
+    if(Array.isArray(data.record)) return data.record;
+    if(data.record && Array.isArray(data.record.submissions)) return data.record.submissions;
+    return [];
+  } catch(e){ console.warn('fetchRemote error:', e); return submissions; }
 }
 
 function mergeSessions(a, b){
@@ -894,7 +897,9 @@ async function pollCloud(){
   if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
   try {
     const latest = await fetchRemote();
-    if(latest.length !== submissions.length){
+    const latestKey = JSON.stringify(latest.map(s=>s.sessionId+s.sub).sort());
+    const currentKey = JSON.stringify(submissions.map(s=>s.sessionId+s.sub).sort());
+    if(latestKey !== currentKey){
       submissions = latest;
       localStorage.setItem('zirk_v3', JSON.stringify(submissions));
       refreshDisplay();
