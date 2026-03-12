@@ -96,14 +96,6 @@ textarea{resize:vertical;min-height:86px;line-height:1.6;}
 .bnx:hover{opacity:.88;transform:translateY(-1px);}
 .bnx:active{transform:translateY(0);}
 #succ{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 20px;background:var(--bg);gap:18px;}
-#welcome{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px;background:radial-gradient(ellipse 80% 60% at 50% 30%,#082240 0%,var(--bg) 70%);gap:22px;}
-.wlogo{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--mu);letter-spacing:2px;text-transform:uppercase;}
-.wtitle{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1.2;background:linear-gradient(120deg,#38bdf8,#0ea5e9,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;max-width:380px;}
-.wsub{font-size:14px;color:var(--mu);max-width:320px;line-height:1.7;}
-.wbadge{display:flex;align-items:center;gap:8px;background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.25);border-radius:100px;padding:8px 18px;font-size:12px;color:var(--ac);font-weight:600;}
-.wstart{padding:15px 38px;background:linear-gradient(120deg,#0ea5e9,#6366f1);border:none;border-radius:100px;color:white;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:8px;}
-.wstart:hover{opacity:.88;transform:translateY(-2px);}
-.wdivider{width:48px;height:2px;background:linear-gradient(90deg,#0ea5e9,#6366f1);border-radius:2px;}
 .sring{width:88px;height:88px;border-radius:50%;background:linear-gradient(120deg,rgba(14,165,233,.2),rgba(99,102,241,.2));border:2px solid rgba(14,165,233,.4);display:flex;align-items:center;justify-content:center;font-size:38px;animation:popIn .5s cubic-bezier(.4,0,.2,1);}
 @keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 .sh{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;}
@@ -178,14 +170,24 @@ tr:last-child td{border-bottom:none;}
 .mstat .dot-mini{width:12px;height:12px;}
 
 /* ── FAB ── */
-.fab-nav{position:fixed;bottom:20px;left:20px;display:flex;flex-direction:row;gap:8px;z-index:200;}
-.fab{padding:7px 13px;border-radius:100px;font-family:'Instrument Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;text-transform:uppercase;opacity:0.7;}.fab:hover{opacity:1;}
+.fab-nav{position:fixed;top:16px;right:16px;display:flex;flex-direction:row;gap:8px;z-index:200;}
+.fab{padding:8px 15px;border-radius:100px;font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
 .fab.d{background:rgba(14,165,233,.18);border:1px solid rgba(14,165,233,.35);color:var(--ac);}
 .fab.f{background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.35);color:#a5b4fc;}
 .fab.a{background:rgba(74,74,74,.25);border:1px solid var(--bo);color:var(--mu);}
 .fab:hover{transform:translateY(-2px);}
+
+/* ── WELCOME SPLASH ── */
+#welcome{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px;background:radial-gradient(ellipse 80% 60% at 50% 30%,#082240 0%,var(--bg) 70%);gap:24px;}
+.wlogo{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--mu);letter-spacing:3px;text-transform:uppercase;}
+.wtitle{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1.25;background:linear-gradient(120deg,#38bdf8,#0ea5e9,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;max-width:400px;}
+.wemoji{font-size:52px;line-height:1;}
+.wsub{font-size:14px;color:var(--mu);max-width:320px;line-height:1.75;}
+.wbadge{display:flex;align-items:center;gap:8px;background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.25);border-radius:100px;padding:8px 20px;font-size:12px;color:var(--ac);font-weight:600;}
+.wdiv{width:48px;height:3px;background:linear-gradient(90deg,#0ea5e9,#6366f1);border-radius:2px;}
+.wstart{padding:16px 40px;background:linear-gradient(120deg,#0ea5e9,#6366f1);border:none;border-radius:100px;color:white;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:4px;}
+.wstart:hover{opacity:.88;transform:translateY(-2px);}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -207,15 +209,15 @@ tr:last-child td{border-bottom:none;}
   </div>
   <div class="mgrid" id="mgrid"></div>
   <div class="qrbar" style="padding:20px 28px;gap:28px;align-items:center;">
-    <div id="qrCanvas" style="background:white;border-radius:12px;padding:10px;flex-shrink:0;width:120px;height:120px;display:flex;align-items:center;justify-content:center;"></div>
+    <div id="qrCanvas" style="background:white;border-radius:12px;padding:8px;flex-shrink:0;width:116px;height:116px;display:flex;align-items:center;justify-content:center;"></div>
     <div class="qrt" style="flex:1;">
-      <strong style="font-size:17px;display:block;margin-bottom:8px;">📱 Jetzt mitmachen — QR Code scannen!</strong>
-      <span style="font-size:13px;line-height:1.7;color:var(--mu);">Handy-Kamera auf den Code richten → Formular öffnet sich direkt &amp; zeigt die Willkommensseite</span><br>
+      <strong style="font-size:16px;display:block;margin-bottom:6px;">📱 Jetzt mitmachen — QR Code scannen!</strong>
+      <span style="font-size:13px;line-height:1.7;color:var(--mu);">Handy-Kamera auf den Code richten → Willkommensseite öffnet sich direkt</span>
       <code id="qrUrl" style="word-break:break-all;font-size:11px;margin-top:8px;display:block;color:var(--ac);background:var(--s2);padding:5px 9px;border-radius:6px;"></code>
     </div>
-    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:center;background:var(--s2);border:1px solid var(--bo);border-radius:12px;padding:14px 20px;">
+    <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;align-items:center;background:var(--s2);border:1px solid var(--bo);border-radius:12px;padding:14px 22px;">
       <div style="font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:1.5px;">Teilnehmer</div>
-      <div style="font-family:Syne,sans-serif;font-size:36px;font-weight:800;background:linear-gradient(120deg,#38bdf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;" id="dvQrCount">0</div>
+      <div id="dvQrCount" style="font-family:Syne,sans-serif;font-size:38px;font-weight:800;background:linear-gradient(120deg,#38bdf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;">0</div>
       <div style="font-size:10px;color:var(--mu);">Live</div>
     </div>
   </div>
@@ -241,14 +243,14 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<!-- ══ WELCOME SPLASH (phone users) ══ -->
+<!-- ══ WELCOME SPLASH (phone/QR users) ══ -->
 <div id="welcome">
   <div class="wlogo">Lindner Group</div>
-  <div class="wdivider"></div>
-  <div style="font-size:48px">🌿</div>
+  <div class="wdiv"></div>
+  <div class="wemoji">🌿</div>
   <div class="wtitle">Zirkularität Summit 2026 — Lindner</div>
-  <div class="wsub">Willkommen! Bitte nehmen Sie sich ein paar Minuten, um den Fragebogen zur Zirkularitätsstrategie auszufüllen.</div>
-  <div class="wbadge">✏️ &nbsp; Ca. 5–10 Minuten &nbsp;·&nbsp; 7 Bereiche &nbsp;·&nbsp; Anonym auf der Leinwand</div>
+  <div class="wsub">Willkommen! Nehmen Sie sich ein paar Minuten, um den Fragebogen zur Zirkularitätsstrategie auszufüllen.</div>
+  <div class="wbadge">✏️ &nbsp;Ca. 5–10 Minuten &nbsp;·&nbsp; 7 Bereiche &nbsp;·&nbsp; Anonym auf der Leinwand</div>
   <button class="wstart" onclick="startForm()">Fragebogen starten →</button>
 </div>
 
@@ -321,6 +323,7 @@ tr:last-child td{border-bottom:none;}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 /* ══ DATA FROM matrixinput.csv ══ */
 const MATRIX = [{"id":"material-_und_pr","emoji":"♻️","title":"Material- und Produktrücknahme","subs":[{"id":"s2","label":"Rücklauf","question":"Gibt es einen Rücklauf?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s3","label":"Angebot","question":"Angebot\nWurde ein Konzept bereits entwickelt?\nWurde das Produkt bereits auf dem Markt angeboten","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s4","label":"Wirtschaftlichkeit","question":"Was bedeutet wirtschaftlich?\nGünstiger als Neuprodukt:","statusOptions":{"green":"Günstiger","yellow":"Neutral","red":"Teurer"}},{"id":"s5","label":"Ökologisch","question":"Was bedeutet ökologisch?\nNiedrigeres CO2e als Neuprodukt","statusOptions":{"green":"Niedriger","yellow":"Neutral","red":"Höherer"}},{"id":"s6","label":"Qualität","question":"Was bedeutet Qualität bei Rückbau?\nTechnisch und optisch qualitativ neuwertig beim Wiedereinbau","statusOptions":{"green":"Ja","yellow":"unklar","red":"Nein"}}]},{"id":"ökobilanzierung","emoji":"🌍","title":"Ökobilanzierung","subs":[{"id":"s8","label":"Berechnung CO2 Neuprodukte (Zyklus 1) mit Rücknahmeszenario","question":"Bilanzierung (Energie, CO2, Ressourcen)\nCO2 Zahlen für Produkt mit inkl. Rücknahme?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s9","label":"Berechnung CO2 Aufbereitete Produkte (Zyklus 2)","question":"Chance in Kommunication von CO2 Zahlen aufbereitete Produkte\nVorteile in Einsparung\n-CO2\n-Ressourcen\n-Energie","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s10","label":"Darstellung in möglichen Tools","question":"Integrierung von Einsparungspotenzial zu verschíedenen Tools:\n1. CO2 Rechner auf Produktebene\n2. LCA optimizer für Geschäftsbereiche\n3. Projekt-/Gebäude Tool mit Re-Strategien","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s11","label":"Vorteile für die Zukunft","question":"Vorbereitet für CO2-Deckel auf Gebäudebene (m² BGF)","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}}]},{"id":"produktzertifizi","emoji":"🏅","title":"Produktzertifizierung (C2C)","subs":[{"id":"s13","label":"C2C-Zertifikat Status-Quo","question":"Gib es bereits ein C2C-Zertifikat?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s14","label":"C2C-Zertifikat Zukünftiger Weg","question":"Möchten Sie ein neues C2C‑Zertifikat für ein Produkt erstellen oder das bestehende C2C‑Zertifikat verlängern?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}}]},{"id":"marketing__kommu","emoji":"📢","title":"Marketing/ Kommunikation","subs":[{"id":"s16","label":"Zusammenarbeit","question":"Arbeiten die einzelnen Geschäftsbereiche an der Kommunikation ihrer Kreislaufwirtschaft mit dem Marketing?\n\n1. gemeinsam\noder\n2. getrennt","statusOptions":{"green":"ja","yellow":"in Planung","red":"nein"}}]},{"id":"vertrieb","emoji":"📊","title":"Vertrieb","subs":[{"id":"s19","label":"Schulungen","question":"Wurde der Vertrieb geschult?","statusOptions":{"green":"ja","yellow":"unklar","red":"nein"}},{"id":"s20","label":"Vertriebsaktivitäten","question":"Werden die Möglichkeiten der Zirkularität aktiv im operativen Vertrieb genutzt?","statusOptions":{"green":"ja","yellow":"unklar","red":"nein"}}]},{"id":"innovation_&_for","emoji":"🔬","title":"Innovation & Forschung","subs":[{"id":"s23","label":"Forschung / Innovation","question":"Gibt es Bestrebungen / bereits umgesetzte Forschungsprojekte/\nInnovationsprojekte?","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}}]},{"id":"digitalisierung","emoji":"💻","title":"Digitalisierung","subs":[{"id":"s26","label":"Track and Trace","question":"Gibt es eine Strategie für die Nachverfolgung der Produkte.\nGibt es bereits eine physische Kennzeichnung (generisch / eineindeutig) für die Produkte.","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}},{"id":"s27","label":"Digitaler 2nd Life Handelsplatz (LinCular)","question":"Digitaler 2nd Life Handelsplatz (LinCular)\nInterne (später ggf. externe) Plattform für Bauteilpotenziale, die vor dem Abriss stehen – Alternative zu Markt‑Börsen wie Concular.\n\nWettbewerbsvorteile:\nStärkung der Marken‑ und Story‑Positionierung:\n-Lindner ist DER Komplettanbieter über alle Wertschöpfungs-ketten für zirkuläre Lösungen\n-Angebot messbarer CO₂‑Reduktion für Kunden\n-Attraktivität für Dritt‑Partner","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}}]}];
@@ -381,9 +384,6 @@ function lockAdmin(){
 /* ══ DISPLAY ══ */
 function buildGrid(){
   const g=document.getElementById('mgrid'); g.innerHTML='';
-  const qrCountEl = document.getElementById('dvQrCount');
-  if(qrCountEl) qrCountEl.textContent = people;
-
   MATRIX.forEach(cat=>{
     const d=document.createElement('div');
     d.className='mc'; d.id='mc-'+cat.id;
@@ -822,144 +822,119 @@ function showView(id){
   }
 }
 
-/* ══════════════════════════════════════════════════════════════
-   GITHUB CONFIG — fill in after creating your repo
-   ─────────────────────────────────────────────────────────────
-   GITHUB_TOKEN  : Personal Access Token (repo scope)
-                   github.com → Settings → Developer settings
-                   → Personal access tokens → Tokens (classic)
-                   → Generate new token → check "repo" → copy
-   GITHUB_REPO   : "username/repo-name"  e.g. "lisa/summit2025"
-   DATA_FILE     : path inside repo where submissions are stored
-════════════════════════════════════════════════════════════════ */
-const GITHUB_TOKEN = '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';       // ← paste token here
-const GITHUB_REPO  = 'alanjofy/zirkulaer-summit';       // ← e.g. 'lisa/zirkulaer-summit'
+/* ══════════════════════════════════════════════════
+   GITHUB CONFIG
+   ── Fill in after creating your repo & token ──
+   GITHUB_TOKEN : Personal Access Token (repo scope)
+   GITHUB_REPO  : "username/repo-name"
+═══════════════════════════════════════════════════ */
+const GITHUB_TOKEN = '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';         // ← paste token here
+const GITHUB_REPO  = 'alanjofy/zirkulaer-summit';         // ← e.g. 'alanjofy/zirkulaer-summit'
 const DATA_FILE    = 'data/submissions.json';
-
 const GH_API = `https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`;
-let ghFileSha = null; // tracks current file SHA for updates
+let ghFileSha = null;
 
 /* ══ GITHUB SYNC ══ */
 async function syncToGitHub(){
-  if(!GITHUB_TOKEN || !GITHUB_REPO) return;
+  if(!GITHUB_TOKEN||!GITHUB_REPO) return;
   try {
-    // Always fetch latest first to merge (avoid overwrite race)
     const latest = await fetchFromGitHub();
     const merged = mergeSessions(latest, submissions);
     submissions = merged;
     localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-
     const body = {
-      message: 'summit: submission ' + Date.now(),
+      message: 'summit:submit:' + Date.now(),
       content: btoa(unescape(encodeURIComponent(JSON.stringify(merged)))),
       ...(ghFileSha ? {sha: ghFileSha} : {})
     };
     const res = await fetch(GH_API, {
-      method: 'PUT',
-      headers: {
-        'Authorization': 'token ' + GITHUB_TOKEN,
-        'Content-Type': 'application/json'
-      },
+      method:'PUT',
+      headers:{'Authorization':'token '+GITHUB_TOKEN,'Content-Type':'application/json'},
       body: JSON.stringify(body)
     });
     const data = await res.json();
     if(data.content) ghFileSha = data.content.sha;
-  } catch(e){ console.warn('GitHub sync failed:', e); }
+  } catch(e){ console.warn('GitHub sync failed:',e); }
 }
 
 async function fetchFromGitHub(){
-  if(!GITHUB_TOKEN || !GITHUB_REPO) return submissions;
+  if(!GITHUB_TOKEN||!GITHUB_REPO) return submissions;
   try {
-    const res = await fetch(GH_API + '?t=' + Date.now(), {
-      headers: {'Authorization': 'token ' + GITHUB_TOKEN}
-    });
+    const res = await fetch(GH_API+'?t='+Date.now(),{headers:{'Authorization':'token '+GITHUB_TOKEN}});
     if(!res.ok) return submissions;
     const data = await res.json();
     ghFileSha = data.sha;
-    const decoded = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/
-/g,'')))));
-    return Array.isArray(decoded) ? decoded : submissions;
+    return JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
   } catch(e){ return submissions; }
 }
 
-async function pollGitHub(){
-  if(!GITHUB_TOKEN || !GITHUB_REPO) {
-    // Offline mode — localStorage only
-    const s = JSON.parse(localStorage.getItem('zirk_v3')||'[]');
-    if(s.length !== submissions.length){
-      submissions = s;
-      refreshDisplay();
-      if(adminUnlocked) renderAdmin();
-    }
-    return;
-  }
-  const latest = await fetchFromGitHub();
-  if(latest.length !== submissions.length){
-    submissions = latest;
-    localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-    refreshDisplay();
-    if(adminUnlocked) renderAdmin();
-  }
+function mergeSessions(a,b){
+  const map={};
+  [...(Array.isArray(a)?a:[]),...b].forEach(s=>{map[s.sessionId+s.sub]=s;});
+  return Object.values(map);
 }
 
-// Merge two submission arrays by sessionId (no duplicates)
-function mergeSessions(a, b){
-  const map = {};
-  [...a, ...b].forEach(s => { map[s.sessionId + s.sub] = s; });
-  return Object.values(map);
+async function pollGitHub(){
+  if(!GITHUB_TOKEN||!GITHUB_REPO){
+    const s=JSON.parse(localStorage.getItem('zirk_v3')||'[]');
+    if(s.length!==submissions.length){submissions=s;refreshDisplay();if(adminUnlocked)renderAdmin();}
+    return;
+  }
+  const latest=await fetchFromGitHub();
+  if(latest.length!==submissions.length){
+    submissions=latest;
+    localStorage.setItem('zirk_v3',JSON.stringify(submissions));
+    refreshDisplay();
+    if(adminUnlocked)renderAdmin();
+  }
 }
 
 /* ══ URL ROUTING ══ */
 function initRouting(){
-  const params = new URLSearchParams(window.location.search);
-  const view = params.get('view');
-  if(view === 'form'){
-    // Phone / QR user — hide nav, show welcome splash first
-    document.getElementById('fabNav').style.display = 'none';
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('view')==='form'){
+    // Phone user — hide FAB nav, show welcome splash
+    document.getElementById('fabNav').style.display='none';
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById('welcome').style.display = 'flex';
+    document.getElementById('welcome').style.display='flex';
   } else {
     showView('dv');
   }
 }
 
 function startForm(){
-  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('welcome').style.display='none';
   showView('fv');
   initForm();
 }
 
 /* ══ QR CODE ══ */
 function initQR(){
-  const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost';
-  let formUrl;
-  if(isLocal){
-    // Local — QR will point to a placeholder but still renders
-    formUrl = 'https://yourname.github.io/your-repo/?view=form';
-    document.getElementById('qrUrl').textContent = '⚠️ Lokal: Nach GitHub-Upload erscheint hier Ihre echte URL automatisch';
-  } else {
-    formUrl = window.location.origin + window.location.pathname + '?view=form';
-    document.getElementById('qrUrl').textContent = formUrl;
-  }
-  // Generate QR code using QRCode.js — works offline and online
+  const isLocal = location.protocol==='file:' || location.hostname==='localhost';
+  const formUrl = isLocal
+    ? 'https://alanjofy.github.io/zirkulaer-summit/?view=form'
+    : location.origin + location.pathname + '?view=form';
+  const urlEl = document.getElementById('qrUrl');
+  if(urlEl) urlEl.textContent = isLocal ? '⚠️ Lokal — nach GitHub Upload wird echte URL angezeigt' : formUrl;
   const container = document.getElementById('qrCanvas');
-  container.innerHTML = '';
-  new QRCode(container, {
-    text: formUrl,
-    width: 100,
-    height: 100,
-    colorDark: '#000000',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
-  });
+  if(container && typeof QRCode !== 'undefined'){
+    container.innerHTML='';
+    new QRCode(container,{text:formUrl,width:100,height:100,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  }
+  const countEl = document.getElementById('dvQrCount');
+  if(countEl) countEl.textContent = getPersons().length;
 }
 
 /* ══ INIT ══ */
 buildGrid();
 initRouting();
 initQR();
-pollGitHub(); // initial load from GitHub
-setInterval(pollGitHub, 5000); // poll every 5s for live updates
+pollGitHub();
+setInterval(()=>{
+  pollGitHub();
+  const countEl=document.getElementById('dvQrCount');
+  if(countEl) countEl.textContent=getPersons().length;
+},5000);
 </script>
 </body>
 </html>
