@@ -554,7 +554,7 @@ function submitAll(){
   submissions.push(...rows);
   localStorage.setItem('zirk_v3',JSON.stringify(submissions));
   refreshDisplay();
-  syncToGitHub();
+  syncToCloud();
   document.getElementById('qshell').style.display='none';
   document.getElementById('succ').style.display='flex';
 }
@@ -822,71 +822,87 @@ function showView(id){
   }
 }
 
-/* ══════════════════════════════════════════════════
-   GITHUB CONFIG
-   ── Fill in after creating your repo & token ──
-   GITHUB_TOKEN : Personal Access Token (repo scope)
-   GITHUB_REPO  : "username/repo-name"
-═══════════════════════════════════════════════════ */
-const GITHUB_TOKEN = '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';         // ← paste token here
-const GITHUB_REPO  = 'alanjofy/zirkulaer-summit';         // ← e.g. 'alanjofy/zirkulaer-summit'
-const DATA_FILE    = 'data/submissions.json';
-const GH_API = `https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`;
-let ghFileSha = null;
+/* ══════════════════════════════════════════════════════════════
+   JSONBIN CONFIG — free real-time sync, no account needed
+   ────────────────────────────────────────────────────────────
+   HOW TO SET UP (2 minutes):
+   1. Go to https://jsonbin.io  → click "Sign Up Free"
+   2. After login → click "CREATE BIN"
+   3. Paste this as the bin content:  []
+   4. Click "CREATE" → copy the BIN ID from the URL
+      (looks like: 6650f3e9acd3cb34a836e123)
+   5. Go to API Keys (top menu) → copy your Access Key
+   6. Paste both below and re-upload index.html to GitHub
+═══════════════════════════════════════════════════════════════ */
+const JSONBIN_ID  = '69b2d637b7ec241ddc621d3b';
+const JSONBIN_KEY = '$2a$10$21yEXI9A3ci1zbPy3Jbox.QKFYNUpYtvswlEMq04JdSPCCWQW062u';
 
-/* ══ GITHUB SYNC ══ */
-async function syncToGitHub(){
-  if(!GITHUB_TOKEN||!GITHUB_REPO) return;
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+
+/* ══ SYNC ══ */
+async function syncToCloud(){
+  // push new submissions to JSONBin
+  if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
   try {
-    const latest = await fetchFromGitHub();
+    // fetch latest first to merge
+    const latest = await fetchRemote();
     const merged = mergeSessions(latest, submissions);
     submissions = merged;
     localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-    const body = {
-      message: 'summit:submit:' + Date.now(),
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(merged)))),
-      ...(ghFileSha ? {sha: ghFileSha} : {})
-    };
-    const res = await fetch(GH_API, {
-      method:'PUT',
-      headers:{'Authorization':'token '+GITHUB_TOKEN,'Content-Type':'application/json'},
-      body: JSON.stringify(body)
+    await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY,
+        'X-Bin-Versioning': 'false'
+      },
+      body: JSON.stringify(merged)
     });
-    const data = await res.json();
-    if(data.content) ghFileSha = data.content.sha;
-  } catch(e){ console.warn('GitHub sync failed:',e); }
+  } catch(e){ console.warn('Sync failed:', e); }
 }
 
-async function fetchFromGitHub(){
-  if(!GITHUB_TOKEN||!GITHUB_REPO) return submissions;
+async function fetchRemote(){
+  if(!JSONBIN_ID||!JSONBIN_KEY) return submissions;
   try {
-    const res = await fetch(GH_API+'?t='+Date.now(),{headers:{'Authorization':'token '+GITHUB_TOKEN}});
-    if(!res.ok) return submissions;
+    const res = await fetch(JSONBIN_URL + '/latest', {
+      headers: {'X-Master-Key': JSONBIN_KEY}
+    });
     const data = await res.json();
-    ghFileSha = data.sha;
-    return JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+    return Array.isArray(data.record) ? data.record : [];
   } catch(e){ return submissions; }
 }
 
-function mergeSessions(a,b){
-  const map={};
-  [...(Array.isArray(a)?a:[]),...b].forEach(s=>{map[s.sessionId+s.sub]=s;});
+function mergeSessions(a, b){
+  const map = {};
+  [...(Array.isArray(a)?a:[]), ...(Array.isArray(b)?b:[])].forEach(s => {
+    map[s.sessionId + s.sub] = s;
+  });
   return Object.values(map);
 }
 
-async function pollGitHub(){
-  if(!GITHUB_TOKEN||!GITHUB_REPO){
-    const s=JSON.parse(localStorage.getItem('zirk_v3')||'[]');
-    if(s.length!==submissions.length){submissions=s;refreshDisplay();if(adminUnlocked)renderAdmin();}
-    return;
-  }
-  const latest=await fetchFromGitHub();
-  if(latest.length!==submissions.length){
-    submissions=latest;
-    localStorage.setItem('zirk_v3',JSON.stringify(submissions));
+function offlineSync(){
+  // No JSONBin configured — localStorage only (same device)
+  const s = JSON.parse(localStorage.getItem('zirk_v3')||'[]');
+  if(s.length !== submissions.length){
+    submissions = s;
     refreshDisplay();
-    if(adminUnlocked)renderAdmin();
+    if(adminUnlocked) renderAdmin();
   }
+}
+
+async function pollCloud(){
+  if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
+  try {
+    const latest = await fetchRemote();
+    if(latest.length !== submissions.length){
+      submissions = latest;
+      localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+      refreshDisplay();
+      if(adminUnlocked) renderAdmin();
+      const countEl = document.getElementById('dvQrCount');
+      if(countEl) countEl.textContent = getPersons().length;
+    }
+  } catch(e){ console.warn('Poll failed:', e); }
 }
 
 /* ══ URL ROUTING ══ */
@@ -912,7 +928,7 @@ function startForm(){
 function initQR(){
   const isLocal = location.protocol==='file:' || location.hostname==='localhost';
   const formUrl = isLocal
-    ? 'https://alanjofy.github.io/zirkulaer-summit/?view=form'
+    ? 'https://alanjofy.github.io/zirkulaer-summit/?view=form' /* update if repo name changes */
     : location.origin + location.pathname + '?view=form';
   const urlEl = document.getElementById('qrUrl');
   if(urlEl) urlEl.textContent = isLocal ? '⚠️ Lokal — nach GitHub Upload wird echte URL angezeigt' : formUrl;
@@ -929,9 +945,9 @@ function initQR(){
 buildGrid();
 initRouting();
 initQR();
-pollGitHub();
+pollCloud();
 setInterval(()=>{
-  pollGitHub();
+  pollCloud();
   const countEl=document.getElementById('dvQrCount');
   if(countEl) countEl.textContent=getPersons().length;
 },5000);
