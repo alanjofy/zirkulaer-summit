@@ -360,7 +360,8 @@ function personStats(rows){
     else if(r2.status==='red')r++;
     else n++;
   });
-  return {g,y,r,n,total:rows.length};
+  const answered=g+y+r;
+  return {g,y,r,n,total:answered,skipped:n};
 }
 
 /* ══ ADMIN LOCK ══ */
@@ -402,9 +403,10 @@ function refreshDisplay(){
   const people = persons.length;
   // "complete" = person who answered all sub-questions
   const totalSubs = MATRIX.reduce((a,c)=>a+c.subs.length,0);
-  const done = persons.filter(p=>p.rows.length>=totalSubs).length;
+  const done = persons.filter(p=>p.rows.filter(r=>r.status!=='').length>=totalSubs).length;
 
-  document.getElementById('dvTotal').textContent=total;
+  const answeredTotal=submissions.filter(s=>s.status!=='').length;
+  document.getElementById('dvTotal').textContent=answeredTotal;
   document.getElementById('dvPeople').textContent=people;
   document.getElementById('dvComplete').textContent=done;
   const pct=Math.min((people/50)*100,100);
@@ -416,14 +418,14 @@ function refreshDisplay(){
   document.getElementById('dvDepts').innerHTML=Object.entries(dm).map(([d,n])=>`<div class="dchip">${d}<span>${n}</span></div>`).join('');
 
   MATRIX.forEach(cat=>{
-    const cs=submissions.filter(s=>s.cat===cat.id);
+    const cs=submissions.filter(s=>s.cat===cat.id&&s.status!=='');
     const ne=document.getElementById('mn-'+cat.id);
     const ce=document.getElementById('mc-'+cat.id);
     if(ne)ne.textContent=cs.length;
     if(ce)ce.classList.toggle('act',cs.length>0);
     cat.subs.forEach(sub=>{
       const e=document.getElementById(`msc-${cat.id}-${sub.id}`);
-      if(e)e.textContent=cs.filter(s=>s.sub===sub.id).length;
+      if(e)e.textContent=cs.filter(s=>s.sub===sub.id&&s.status!=='').length;
     });
   });
 }
@@ -585,7 +587,7 @@ function renderAdmin(){
       <td><div class="pname">${p.vorname} ${p.nachname}</div><div class="parea">${p.area}</div></td>
       <td style="color:var(--mu);font-size:12px">${p.area}</td>
       <td style="color:var(--mu);font-size:12px">${p.time}</td>
-      <td style="font-size:12px;color:var(--tx)">${st.total} Antworten</td>
+      <td style="font-size:12px;color:var(--tx)">${st.total}<span style="color:var(--mu);font-size:11px"> / 17</span></td>
       <td><div class="dots-row">${dotsHtml}</div><div style="font-size:10px;color:var(--mu);margin-top:4px">${st.g}✅ ${st.y}🟡 ${st.r}❌</div></td>
       <td style="display:flex;gap:6px;align-items:center;">
         <button class="view-btn" onclick="openModal('${p.sessionId}');event.stopPropagation()">Details →</button>
@@ -817,15 +819,18 @@ function deletePerson(sessionId){
     return key !== sessionId;
   });
   localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-  syncToCloud();
+  pushToCloud(submissions); // direct write — no re-merge so deleted person stays deleted
   refreshDisplay();
   renderAdmin();
 }
 
 function clearAll(){
   if(!confirm('Wirklich alle Eingaben löschen?'))return;
-  submissions=[];localStorage.removeItem('zirk_v3');
-  refreshDisplay();renderAdmin();
+  submissions=[];
+  localStorage.removeItem('zirk_v3');
+  pushToCloud([]); // wipe cloud too
+  refreshDisplay();
+  renderAdmin();
 }
 
 /* ══ NAV ══ */
@@ -858,14 +863,21 @@ const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 
 /* ══ SYNC ══ */
 async function syncToCloud(){
-  // push new submissions to JSONBin
+  // For new submissions: fetch + merge + push
   if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
   try {
-    // fetch latest first to merge
     const latest = await fetchRemote();
     const merged = mergeSessions(latest, submissions);
     submissions = merged;
     localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+    await pushToCloud(submissions);
+  } catch(e){ console.warn('Sync failed:', e); }
+}
+
+async function pushToCloud(data){
+  // Direct write — used for deletions (no merge, overwrites cloud with local state)
+  if(!JSONBIN_ID||!JSONBIN_KEY) return;
+  try {
     await fetch(JSONBIN_URL, {
       method: 'PUT',
       headers: {
@@ -873,9 +885,9 @@ async function syncToCloud(){
         'X-Master-Key': JSONBIN_KEY,
         'X-Bin-Versioning': 'false'
       },
-      body: JSON.stringify(Array.isArray(merged) ? merged : [])
+      body: JSON.stringify(Array.isArray(data) ? data : [])
     });
-  } catch(e){ console.warn('Sync failed:', e); }
+  } catch(e){ console.warn('Push failed:', e); }
 }
 
 async function fetchRemote(){
