@@ -191,6 +191,79 @@ tr:last-child td{border-bottom:none;}
 .wdiv{width:48px;height:3px;background:linear-gradient(90deg,#0ea5e9,#6366f1);border-radius:2px;}
 .wstart{padding:16px 40px;background:linear-gradient(120deg,#0ea5e9,#6366f1);border:none;border-radius:100px;color:white;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:4px;}
 .wstart:hover{opacity:.88;transform:translateY(-2px);}
+
+/* ── ADMIN TABS ── */
+.admin-tabs{display:flex;gap:4px;background:var(--s2);border-radius:12px;padding:4px;width:fit-content;margin-bottom:4px;}
+.atab{padding:9px 22px;border-radius:9px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--mu);transition:all .2s;}
+.atab.active{background:var(--s1);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.4);}
+.atab-panel{display:none;}
+.atab-panel.active{display:flex;flex-direction:column;gap:20px;}
+
+/* ── STATS ── */
+.ss-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.ss-card{background:var(--s1);border:1px solid var(--bo);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;}
+.ss-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
+.ss-card.blue::after{background:linear-gradient(90deg,#38bdf8,#6366f1);}
+.ss-card.green::after{background:linear-gradient(90deg,#4ade80,#22c55e);}
+.ss-card.yellow::after{background:linear-gradient(90deg,#fbbf24,#f59e0b);}
+.ss-card.red::after{background:linear-gradient(90deg,#f87171,#ef4444);}
+.ss-big{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;line-height:1;}
+.ss-big.blue{background:linear-gradient(120deg,#38bdf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ss-big.green{background:linear-gradient(120deg,#4ade80,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ss-big.yellow{background:linear-gradient(120deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ss-big.red{background:linear-gradient(120deg,#f87171,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ss-lbl{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;}
+.ss-sub{font-size:12px;color:var(--mu);}
+
+/* Charts row */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.chart-card{background:var(--s1);border:1px solid var(--bo);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;gap:16px;}
+.chart-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);}
+.donut-wrap{display:flex;align-items:center;gap:24px;}
+.donut-svg{flex-shrink:0;}
+.donut-legend{display:flex;flex-direction:column;gap:10px;flex:1;}
+.dleg-row{display:flex;align-items:center;gap:10px;font-size:12px;}
+.dleg-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.dleg-label{flex:1;color:var(--mu);}
+.dleg-val{font-weight:700;color:var(--tx);}
+.dleg-pct{font-size:11px;color:var(--mu);}
+
+/* Category bars */
+.cat-bars{display:flex;flex-direction:column;gap:8px;}
+.cb-row{display:flex;align-items:center;gap:12px;}
+.cb-name{font-size:11px;color:var(--mu);width:180px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cb-track{flex:1;height:20px;background:var(--s2);border-radius:6px;overflow:hidden;display:flex;}
+.cb-g{background:rgba(74,222,128,.8);height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.cb-y{background:rgba(251,191,36,.8);height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.cb-r{background:rgba(248,113,113,.8);height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.cb-pct{font-size:10px;font-weight:700;color:#4ade80;width:36px;text-align:right;flex-shrink:0;}
+
+/* AI Summary */
+.ai-summary{background:var(--s1);border:1px solid var(--bo);border-radius:16px;padding:22px 26px;display:flex;flex-direction:column;gap:14px;}
+.ai-hdr{display:flex;align-items:center;gap:12px;}
+.ai-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ai-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
+.ai-subtitle{font-size:11px;color:var(--mu);}
+.ai-body{font-size:13px;color:var(--mu);line-height:1.8;}
+.ai-body strong{color:var(--tx);}
+.ai-loading{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mu);}
+.ai-dots span{animation:dotpulse 1.4s infinite both;}
+.ai-dots span:nth-child(2){animation-delay:.2s;}
+.ai-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dotpulse{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.ai-gen-btn{align-self:flex-start;padding:9px 20px;background:linear-gradient(120deg,#0ea5e9,#6366f1);border:none;border-radius:100px;color:white;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.ai-gen-btn:hover{opacity:.85;}
+
+/* Sub detail table */
+.sub-table{width:100%;border-collapse:collapse;font-size:12px;}
+.sub-table th{padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--mu);border-bottom:1px solid var(--bo);font-weight:700;}
+.sub-table td{padding:9px 12px;border-bottom:1px solid rgba(26,45,69,.5);vertical-align:middle;}
+.sub-table tr:last-child td{border-bottom:none;}
+.mini-bar{height:6px;background:var(--s2);border-radius:100px;overflow:hidden;display:flex;width:120px;}
+.mini-g{background:#4ade80;height:100%;}
+.mini-y{background:#fbbf24;height:100%;}
+.mini-r{background:#f87171;height:100%;}
+
 </style>
 </head>
 <body>
@@ -274,32 +347,48 @@ tr:last-child td{border-bottom:none;}
     </div>
   </div>
 
-  <div id="adminPanel" style="display:none;flex-direction:column;gap:22px;width:100%;">
+  <div id="adminPanel" style="display:none;flex-direction:column;gap:18px;width:100%;">
     <div class="adhdr">
-      <div class="adtit">📋 Admin — Teilnehmer Übersicht</div>
+      <div class="adtit">📋 Admin — Zirkularität Summit 2026</div>
       <div class="adbtns">
         <button class="bsm sec" onclick="lockAdmin()">🔒 Sperren</button>
         <button class="bsm dan" onclick="clearAll()">Alles löschen</button>
         <button class="bsm out" onclick="exportCSV()">⬇ CSV Export</button>
-        <button class="bsm xl" onclick="exportXLSX()">📊 Excel Export (Matrix)</button>
+        <button class="bsm xl" onclick="exportXLSX()">📊 Excel Export</button>
       </div>
     </div>
-    <div class="adtw">
-      <div class="eadm" id="adEmpty">Noch keine Eingaben vorhanden.</div>
-      <table id="adTable" style="display:none">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Produktbereich</th>
-            <th>Uhrzeit</th>
-            <th>Antworten</th>
-            <th>🟢 / 🟡 / 🔴</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="adBody"></tbody>
-      </table>
+    <div class="admin-tabs">
+      <button class="atab active" onclick="switchTab(event,'tab-people')">👥 Teilnehmer</button>
+      <button class="atab" onclick="switchTab(event,'tab-stats')">📊 Statistik & KI-Zusammenfassung</button>
+    </div>
+    <div class="atab-panel active" id="tab-people">
+      <div class="adtw">
+        <div class="eadm" id="adEmpty">Noch keine Eingaben vorhanden.</div>
+        <table id="adTable" style="display:none">
+          <thead><tr>
+            <th>#</th><th>Name</th><th>Produktbereich</th>
+            <th>Uhrzeit</th><th>Antworten</th><th>🟢 / 🟡 / 🔴</th><th></th>
+          </tr></thead>
+          <tbody id="adBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="atab-panel" id="tab-stats">
+      <div class="ss-grid" id="ssGrid"></div>
+      <div class="charts-row" id="chartsRow"></div>
+      <div class="ai-summary" id="aiSummary">
+        <div class="ai-hdr">
+          <div class="ai-icon">🤖</div>
+          <div><div class="ai-title">KI-Zusammenfassung</div><div class="ai-subtitle">Automatische Auswertung der Teilnehmerantworten</div></div>
+        </div>
+        <div class="ai-body" id="aiBody" style="display:none"></div>
+        <div class="ai-loading" id="aiLoading" style="display:none">
+          <span>Analyse läuft</span>
+          <span class="ai-dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+        <button class="ai-gen-btn" id="aiGenBtn" onclick="generateAISummary()">✨ KI-Zusammenfassung generieren</button>
+      </div>
+      <div id="subDetailWrap"></div>
     </div>
   </div>
 </div>
@@ -330,11 +419,11 @@ tr:last-child td{border-bottom:none;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 /* ══ DATA FROM matrixinput.csv ══ */
-const MATRIX = [{"id":"material-_und_pr","emoji":"♻️","title":"Material- und Produktrücknahme","subs":[{"id":"s2","label":"Rücklauf","question":"Gibt es einen Rücklauf?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s3","label":"Angebot","question":"Angebot\nWurde ein Konzept bereits entwickelt?\nWurde das Produkt bereits auf dem Markt angeboten","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s4","label":"Wirtschaftlichkeit","question":"Was bedeutet wirtschaftlich?\nGünstiger als Neuprodukt:","statusOptions":{"green":"Günstiger","yellow":"Neutral","red":"Teurer"}},{"id":"s5","label":"Ökologisch","question":"Was bedeutet ökologisch?\nNiedrigeres CO2e als Neuprodukt","statusOptions":{"green":"Niedriger","yellow":"Neutral","red":"Höherer"}},{"id":"s6","label":"Qualität","question":"Was bedeutet Qualität bei Rückbau?\nTechnisch und optisch qualitativ neuwertig beim Wiedereinbau","statusOptions":{"green":"Ja","yellow":"unklar","red":"Nein"}}]},{"id":"ökobilanzierung","emoji":"🌍","title":"Ökobilanzierung","subs":[{"id":"s8","label":"Berechnung CO2 Neuprodukte (Zyklus 1) mit Rücknahmeszenario","question":"Bilanzierung (Energie, CO2, Ressourcen)\nCO2 Zahlen für Produkt mit inkl. Rücknahme?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s9","label":"Berechnung CO2 Aufbereitete Produkte (Zyklus 2)","question":"Chance in Kommunication von CO2 Zahlen aufbereitete Produkte\nVorteile in Einsparung\n-CO2\n-Ressourcen\n-Energie","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s10","label":"Darstellung in möglichen Tools","question":"Integrierung von Einsparungspotenzial zu verschíedenen Tools:\n1. CO2 Rechner auf Produktebene\n2. LCA optimizer für Geschäftsbereiche\n3. Projekt-/Gebäude Tool mit Re-Strategien","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s11","label":"Vorteile für die Zukunft","question":"Vorbereitet für CO2-Deckel auf Gebäudebene (m² BGF)","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}}]},{"id":"produktzertifizi","emoji":"🏅","title":"Produktzertifizierung (C2C)","subs":[{"id":"s13","label":"C2C-Zertifikat Status-Quo","question":"Gib es bereits ein C2C-Zertifikat?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s14","label":"C2C-Zertifikat Zukünftiger Weg","question":"Möchten Sie ein neues C2C‑Zertifikat für ein Produkt erstellen oder das bestehende C2C‑Zertifikat verlängern?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}}]},{"id":"marketing__kommu","emoji":"📢","title":"Marketing/ Kommunikation","subs":[{"id":"s16","label":"Zusammenarbeit","question":"Arbeiten die einzelnen Geschäftsbereiche an der Kommunikation ihrer Kreislaufwirtschaft mit dem Marketing?\n\n1. gemeinsam\noder\n2. getrennt","statusOptions":{"green":"ja","yellow":"in Planung","red":"nein"}}]},{"id":"vertrieb","emoji":"📊","title":"Vertrieb","subs":[{"id":"s19","label":"Schulungen","question":"Wurde der Vertrieb geschult?","statusOptions":{"green":"ja","yellow":"unklar","red":"nein"}},{"id":"s20","label":"Vertriebsaktivitäten","question":"Werden die Möglichkeiten der Zirkularität aktiv im operativen Vertrieb genutzt?","statusOptions":{"green":"ja","yellow":"unklar","red":"nein"}}]},{"id":"innovation_&_for","emoji":"🔬","title":"Innovation & Forschung","subs":[{"id":"s23","label":"Forschung / Innovation","question":"Gibt es Bestrebungen / bereits umgesetzte Forschungsprojekte/\nInnovationsprojekte?","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}}]},{"id":"digitalisierung","emoji":"💻","title":"Digitalisierung","subs":[{"id":"s26","label":"Track and Trace","question":"Gibt es eine Strategie für die Nachverfolgung der Produkte.\nGibt es bereits eine physische Kennzeichnung (generisch / eineindeutig) für die Produkte.","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}},{"id":"s27","label":"Digitaler 2nd Life Handelsplatz (LinCular)","question":"Digitaler 2nd Life Handelsplatz (LinCular)\nInterne (später ggf. externe) Plattform für Bauteilpotenziale, die vor dem Abriss stehen – Alternative zu Markt‑Börsen wie Concular.\n\nWettbewerbsvorteile:\nStärkung der Marken‑ und Story‑Positionierung:\n-Lindner ist DER Komplettanbieter über alle Wertschöpfungs-ketten für zirkuläre Lösungen\n-Angebot messbarer CO₂‑Reduktion für Kunden\n-Attraktivität für Dritt‑Partner","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}}]}];
+const MATRIX = [{"id":"material-_und_pr","emoji":"♻️","title":"Material- und Produktrücknahme","subs":[{"id":"s2","label":"Rücklauf","question":"Gibt es einen Rücklauf?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s3","label":"Angebot","question":"Angebot\nWurde ein Konzept bereits entwickelt?\nWurde das Produkt bereits auf dem Markt angeboten","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s4","label":"Wirtschaftlichkeit","question":"Was bedeutet wirtschaftlich?\nGünstiger als Neuprodukt:","statusOptions":{"green":"Günstiger","yellow":"Neutral","red":"Teurer"}},{"id":"s5","label":"Ökologisch","question":"Was bedeutet ökologisch?\nNiedrigeres CO2e als Neuprodukt","statusOptions":{"green":"Niedriger","yellow":"Neutral","red":"Höherer"}},{"id":"s6","label":"Qualität","question":"Was bedeutet Qualität bei Rückbau?\nTechnisch und optisch qualitativ neuwertig beim Wiedereinbau","statusOptions":{"green":"Ja","yellow":"unklar","red":"Nein"}}]},{"id":"ökobilanzierung","emoji":"🌍","title":"Ökobilanzierung","subs":[{"id":"s8","label":"Neuprodukte (Nutzungszyklus 1)","question":"CO₂ Zahlen mit Rücknahmeszenarien im Standard\nMögliche Vorteile durch Kommunikation neben Preis","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s9","label":"Wiederaufbereitete Produkte (Nutzungszyklus 2)","question":"Mögliche Vorteile durch Kommunikation neben Preis","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s10","label":"Einsparungspotential mit 3 Säulen: CO2, Energie, Ressourcen","question":"Integrierung von Einsparungspotenzial zu verschiedenen Tools:\n1. CO2 Rechner auf Produktebene\n2. LCA optimizer für Geschäftsbereiche\n3. Projekt-/Gebäude Tool mit Re-Strategien","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}}]},{"id":"produktzertifizi","emoji":"🏅","title":"Produktzertifizierung (C2C)","subs":[{"id":"s13","label":"C2C-Zertifikat Status-Quo","question":"Gib es bereits ein C2C-Zertifikat?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}},{"id":"s14","label":"C2C-Zertifikat Zukünftiger Weg","question":"Möchten Sie ein neues C2C‑Zertifikat für ein Produkt erstellen oder das bestehende C2C‑Zertifikat verlängern?","statusOptions":{"green":"Ja","yellow":"in Planung","red":"Nein"}}]},{"id":"marketing__kommu","emoji":"📢","title":"Marketing/ Kommunikation","subs":[{"id":"s16","label":"Zusammenarbeit","question":"Arbeiten die einzelnen Geschäftsbereiche an der Kommunikation ihrer Kreislaufwirtschaft mit dem Marketing?\n\n1. gemeinsam\noder\n2. getrennt","statusOptions":{"green":"ja","yellow":"in Planung","red":"nein"}}]},{"id":"vertrieb","emoji":"📊","title":"Vertrieb","subs":[{"id":"s19","label":"Schulungen","question":"Wurde der Vertrieb geschult?","statusOptions":{"green":"ja","yellow":"unklar","red":"nein"}},{"id":"s20","label":"Vertriebsaktivitäten","question":"Werden die Möglichkeiten der Zirkularität aktiv im operativen Vertrieb genutzt?","statusOptions":{"green":"ja","yellow":"unklar","red":"nein"}}]},{"id":"innovation_&_for","emoji":"🔬","title":"Innovation & Forschung","subs":[{"id":"s23","label":"Forschung / Innovation","question":"Gibt es Bestrebungen / bereits umgesetzte Forschungsprojekte/\nInnovationsprojekte?","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}}]},{"id":"digitalisierung","emoji":"💻","title":"Digitalisierung","subs":[{"id":"s26","label":"Track and Trace","question":"Gibt es eine Strategie für die Nachverfolgung der Produkte.\nGibt es bereits eine physische Kennzeichnung (generisch / eineindeutig) für die Produkte.","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}},{"id":"s27","label":"Digitaler 2nd Life Handelsplatz (LinCular)","question":"Digitaler 2nd Life Handelsplatz (LinCular)\nInterne (später ggf. externe) Plattform für Bauteilpotenziale, die vor dem Abriss stehen – Alternative zu Markt‑Börsen wie Concular.\n\nWettbewerbsvorteile:\nStärkung der Marken‑ und Story‑Positionierung:\n-Lindner ist DER Komplettanbieter über alle Wertschöpfungs-ketten für zirkuläre Lösungen\n-Angebot messbarer CO₂‑Reduktion für Kunden\n-Attraktivität für Dritt‑Partner","statusOptions":{"green":"Ja","yellow":"In Planung","red":"Nein"}}]}];
 
 const PRODUCT_AREAS = ["Boden","Decke","Wand","NORIT","CAS","Reinraum","Objektdesign Türen und Wände, keine Möbel","Fassade","Produktmanagement Trockenbau","Lindner Parc","Steel & Glass","Leuchtenfabrik","Glasfaserbeton","Dach","Li Bautechnik (Hohlleben, Haale a.d.Saale)","Vertrieb Hauptniederlassungen (fürs Projektgeschäft)","Sonstiges"];
 
-const ADMIN_PASSWORD = "lindner2025";
+const ADMIN_PASSWORD = "lindner2026";
 const TOTAL_STEPS = 1 + MATRIX.length;
 
 /* ══ STATE ══ */
@@ -589,7 +678,7 @@ function renderAdmin(){
       <td><div class="pname">${p.vorname} ${p.nachname}</div><div class="parea">${p.area}</div></td>
       <td style="color:var(--mu);font-size:12px">${p.area}</td>
       <td style="color:var(--mu);font-size:12px">${p.time}</td>
-      <td style="font-size:12px;color:var(--tx)">${st.total}<span style="color:var(--mu);font-size:11px"> / 17</span></td>
+      <td style="font-size:12px;color:var(--tx)">${st.total}<span style="color:var(--mu);font-size:11px"> / 16</span></td>
       <td><div class="dots-row">${dotsHtml}</div><div style="font-size:10px;color:var(--mu);margin-top:4px">${st.g}✅ ${st.y}🟡 ${st.r}❌</div></td>
       <td style="display:flex;gap:6px;align-items:center;">
         <button class="view-btn" onclick="openModal('${p.sessionId}');event.stopPropagation()">Details →</button>
@@ -826,18 +915,6 @@ function deletePerson(sessionId){
   renderAdmin();
 }
 
-function deletePerson(sessionId){
-  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
-  submissions = submissions.filter(s => {
-    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
-    return key !== sessionId;
-  });
-  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-  pushToCloud(submissions);
-  refreshDisplay();
-  renderAdmin();
-}
-
 function clearAll(){
   if(!confirm('Wirklich alle Eingaben löschen?'))return;
   submissions=[];
@@ -876,17 +953,6 @@ const JSONBIN_KEY = '$2a$10$rm/U1kJKLBu3VgxKZQsx7.kbyvQPRDSjVqi382NUN1WoKfm1G801
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 
 /* ══ SYNC ══ */
-async function pushToCloud(data){
-  if(!JSONBIN_ID||!JSONBIN_KEY) return;
-  try {
-    await fetch(JSONBIN_URL,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Versioning':'false'},
-      body:JSON.stringify(Array.isArray(data)?data:[])
-    });
-  } catch(e){ console.warn('Push failed:',e); }
-}
-
 async function syncToCloud(){
   // push new submissions to JSONBin
   if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
@@ -950,7 +1016,7 @@ async function pollCloud(){
       submissions = latest;
       localStorage.setItem('zirk_v3', JSON.stringify(submissions));
       refreshDisplay();
-      if(adminUnlocked) renderAdmin();
+      if(adminUnlocked){renderAdmin();if(document.getElementById('tab-stats')?.classList.contains('active'))renderStats();}
       const countEl = document.getElementById('dvQrCount');
       if(countEl) countEl.textContent = getPersons().length;
     }
@@ -991,6 +1057,229 @@ function initQR(){
   }
   const countEl = document.getElementById('dvQrCount');
   if(countEl) countEl.textContent = getPersons().length;
+}
+
+
+function deletePerson(sessionId){
+  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
+  submissions = submissions.filter(s => {
+    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
+    return key !== sessionId;
+  });
+  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+  pushToCloud(submissions);
+  refreshDisplay();
+  renderAdmin();
+}
+
+async function pushToCloud(data){
+  if(!JSONBIN_ID||!JSONBIN_KEY) return;
+  try {
+    await fetch(JSONBIN_URL,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Versioning':'false'},
+      body:JSON.stringify(Array.isArray(data)?data:[])
+    });
+  } catch(e){ console.warn('Push failed:',e); }
+}
+
+/* ══ ADMIN TABS ══ */
+function switchTab(e, tabId){
+  document.querySelectorAll('.atab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  e.target.classList.add('active');
+  if(tabId==='tab-stats') renderStats();
+}
+
+/* ══ STATS ══ */
+function renderStats(){
+  const persons = getPersons();
+  const answered = submissions.filter(s=>s.status!=='');
+  const g = answered.filter(s=>s.status==='green').length;
+  const y = answered.filter(s=>s.status==='yellow').length;
+  const r = answered.filter(s=>s.status==='red').length;
+  const total = answered.length;
+  const totalSubs = MATRIX.reduce((a,c)=>a+c.subs.length,0);
+  const complete = persons.filter(p=>p.rows.filter(r=>r.status!=='').length>=totalSubs).length;
+
+  // ── Summary cards ──
+  document.getElementById('ssGrid').innerHTML = `
+    <div class="ss-card blue">
+      <div class="ss-big blue">${persons.length}</div>
+      <div class="ss-lbl">Teilnehmer</div>
+      <div class="ss-sub">${complete} vollständig ausgefüllt</div>
+    </div>
+    <div class="ss-card green">
+      <div class="ss-big green">${g}</div>
+      <div class="ss-lbl">🟢 Ja / Umgesetzt</div>
+      <div class="ss-sub">${total?Math.round(g/total*100):0}% aller Antworten</div>
+    </div>
+    <div class="ss-card yellow">
+      <div class="ss-big yellow">${y}</div>
+      <div class="ss-lbl">🟡 In Planung</div>
+      <div class="ss-sub">${total?Math.round(y/total*100):0}% aller Antworten</div>
+    </div>
+    <div class="ss-card red">
+      <div class="ss-big red">${r}</div>
+      <div class="ss-lbl">🔴 Nein / Fehlt</div>
+      <div class="ss-sub">${total?Math.round(r/total*100):0}% aller Antworten</div>
+    </div>`;
+
+  // ── Donut chart (SVG) ──
+  function donutSVG(gv,yv,rv,size=130){
+    const tot=gv+yv+rv||1;
+    const gp=gv/tot*100, yp=yv/tot*100, rp=rv/tot*100;
+    const R=50, cx=65, cy=65, circ=2*Math.PI*R;
+    function arc(pct,offset){
+      return `stroke-dasharray:${pct/100*circ} ${circ};stroke-dashoffset:-${offset/100*circ}`;
+    }
+    return `<svg class="donut-svg" width="${size}" height="${size}" viewBox="0 0 130 130">
+      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="var(--s2)" stroke-width="18"/>
+      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#4ade80" stroke-width="18" stroke-linecap="round" style="${arc(gp,0)}" transform="rotate(-90 ${cx} ${cy})"/>
+      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fbbf24" stroke-width="18" stroke-linecap="round" style="${arc(yp,gp)}" transform="rotate(-90 ${cx} ${cy})"/>
+      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#f87171" stroke-width="18" stroke-linecap="round" style="${arc(rp,gp+yp)}" transform="rotate(-90 ${cx} ${cy})"/>
+      <text x="${cx}" y="${cy-6}" text-anchor="middle" fill="var(--tx)" font-size="18" font-weight="800" font-family="Syne,sans-serif">${total}</text>
+      <text x="${cx}" y="${cy+12}" text-anchor="middle" fill="var(--mu)" font-size="9">Antworten</text>
+    </svg>`;
+  }
+
+  // ── Category horizontal bars ──
+  const catBarsHtml = MATRIX.map(cat=>{
+    const cs = answered.filter(s=>s.cat===cat.id);
+    const cg=cs.filter(s=>s.status==='green').length;
+    const cy=cs.filter(s=>s.status==='yellow').length;
+    const cr=cs.filter(s=>s.status==='red').length;
+    const ct=cs.length||1;
+    const gpct=Math.round(cg/ct*100);
+    return `<div class="cb-row">
+      <div class="cb-name" title="${cat.title}">${cat.emoji} ${cat.title}</div>
+      <div class="cb-track">
+        <div class="cb-g" style="width:${Math.round(cg/ct*100)}%"></div>
+        <div class="cb-y" style="width:${Math.round(cy/ct*100)}%"></div>
+        <div class="cb-r" style="width:${Math.round(cr/ct*100)}%"></div>
+      </div>
+      <div class="cb-pct">${gpct}%</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('chartsRow').innerHTML = `
+    <div class="chart-card">
+      <div class="chart-title">Gesamtverteilung der Antworten</div>
+      <div class="donut-wrap">
+        ${donutSVG(g,y,r)}
+        <div class="donut-legend">
+          <div class="dleg-row"><div class="dleg-dot" style="background:#4ade80"></div><span class="dleg-label">Ja / Umgesetzt</span><span class="dleg-val">${g}</span><span class="dleg-pct">${total?Math.round(g/total*100):0}%</span></div>
+          <div class="dleg-row"><div class="dleg-dot" style="background:#fbbf24"></div><span class="dleg-label">In Planung</span><span class="dleg-val">${y}</span><span class="dleg-pct">${total?Math.round(y/total*100):0}%</span></div>
+          <div class="dleg-row"><div class="dleg-dot" style="background:#f87171"></div><span class="dleg-label">Nein / Fehlt</span><span class="dleg-val">${r}</span><span class="dleg-pct">${total?Math.round(r/total*100):0}%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🟢 Ja-Rate pro Kategorie</div>
+      <div class="cat-bars">${catBarsHtml}</div>
+    </div>`;
+
+  // ── Sub-topic detail table per category ──
+  const subHtml = MATRIX.map(cat=>{
+    const rows = cat.subs.map(sub=>{
+      const ss = answered.filter(s=>s.cat===cat.id&&s.sub===sub.id);
+      const sg=ss.filter(s=>s.status==='green').length;
+      const sy=ss.filter(s=>s.status==='yellow').length;
+      const sr=ss.filter(s=>s.status==='red').length;
+      const st=ss.length||1;
+      const top = sg>=sy&&sg>=sr?'🟢 Ja':sy>=sg&&sy>=sr?'🟡 In Planung':'🔴 Nein';
+      return `<tr>
+        <td style="color:var(--tx);font-weight:600">${sub.label}</td>
+        <td><div class="mini-bar"><div class="mini-g" style="width:${Math.round(sg/st*100)}%"></div><div class="mini-y" style="width:${Math.round(sy/st*100)}%"></div><div class="mini-r" style="width:${Math.round(sr/st*100)}%"></div></div></td>
+        <td style="color:#4ade80;font-weight:700">${sg}</td>
+        <td style="color:#fbbf24;font-weight:700">${sy}</td>
+        <td style="color:#f87171;font-weight:700">${sr}</td>
+        <td style="color:var(--mu);font-size:11px">${top}</td>
+      </tr>`;
+    }).join('');
+    return `<div style="background:var(--s1);border:1px solid var(--bo);border-radius:16px;overflow:hidden;margin-bottom:0">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--bo);font-family:Syne,sans-serif;font-size:13px;font-weight:700;">${cat.emoji} ${cat.title}</div>
+      <table class="sub-table">
+        <thead><tr><th>Thema</th><th style="width:120px">Verteilung</th><th>🟢</th><th>🟡</th><th>🔴</th><th>Tendenz</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join('');
+  document.getElementById('subDetailWrap').innerHTML = `<div style="display:flex;flex-direction:column;gap:12px">${subHtml}</div>`;
+}
+
+/* ══ AI SUMMARY ══ */
+async function generateAISummary(){
+  const persons = getPersons();
+  if(!persons.length){ alert('Noch keine Daten vorhanden.'); return; }
+
+  document.getElementById('aiGenBtn').style.display='none';
+  document.getElementById('aiLoading').style.display='flex';
+  document.getElementById('aiBody').style.display='none';
+
+  // Build data summary for AI
+  const answered = submissions.filter(s=>s.status!=='');
+  const g=answered.filter(s=>s.status==='green').length;
+  const y=answered.filter(s=>s.status==='yellow').length;
+  const r=answered.filter(s=>s.status==='red').length;
+  const total=answered.length;
+
+  const catSummary = MATRIX.map(cat=>{
+    const cs=answered.filter(s=>s.cat===cat.id);
+    const cg=cs.filter(s=>s.status==='green').length;
+    const cy=cs.filter(s=>s.status==='yellow').length;
+    const cr=cs.filter(s=>s.status==='red').length;
+    const subDetail = cat.subs.map(sub=>{
+      const ss=answered.filter(s=>s.cat===cat.id&&s.sub===sub.id);
+      const sg=ss.filter(s=>s.status==='green').length;
+      const sy=ss.filter(s=>s.status==='yellow').length;
+      const sr=ss.filter(s=>s.status==='red').length;
+      const ideas=ss.filter(s=>s.idea).map(s=>s.idea).slice(0,3).join('; ');
+      return `  - ${sub.label}: ${sg}x Ja, ${sy}x In Planung, ${sr}x Nein${ideas?' | Kommentare: '+ideas:''}`;
+    }).join('\n');
+    return `${cat.emoji} ${cat.title} (${cg}x Ja, ${cy}x In Planung, ${cr}x Nein):\n${subDetail}`;
+  }).join('\n\n');
+
+  const prompt = `Du bist ein Experte für Kreislaufwirtschaft bei Lindner Group. Analysiere die folgenden Workshopdaten vom Zirkularität Summit 2026 und erstelle eine prägnante Zusammenfassung auf Deutsch.
+
+Teilnehmer: ${persons.length}
+Gesamtantworten: ${total} (🟢 ${g} Ja = ${total?Math.round(g/total*100):0}%, 🟡 ${y} In Planung = ${total?Math.round(y/total*100):0}%, 🔴 ${r} Nein = ${total?Math.round(r/total*100):0}%)
+
+Ergebnisse nach Kategorie:
+${catSummary}
+
+Bitte erstelle eine strukturierte Zusammenfassung mit:
+1. **Gesamtbild** (2-3 Sätze): Wo steht Lindner bei der Zirkularität?
+2. **Stärken** (Top 3 Bereiche mit hohem Ja-Anteil)
+3. **Handlungsbedarf** (Top 3 Bereiche mit hohem Nein/In-Planung-Anteil)
+4. **Empfehlungen** (3 konkrete nächste Schritte)
+
+Schreibe klar, professionell und umsetzbar. Verwende HTML-Tags für Formatierung (<strong> für wichtige Punkte).`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'Keine Antwort erhalten.';
+    document.getElementById('aiBody').innerHTML = text.replace(/\n/g,'<br>');
+    document.getElementById('aiBody').style.display='block';
+    document.getElementById('aiLoading').style.display='none';
+    document.getElementById('aiGenBtn').textContent='🔄 Neu generieren';
+    document.getElementById('aiGenBtn').style.display='inline-flex';
+  } catch(e){
+    document.getElementById('aiLoading').style.display='none';
+    document.getElementById('aiBody').innerHTML='<span style="color:var(--r)">Fehler beim Generieren. Bitte erneut versuchen.</span>';
+    document.getElementById('aiBody').style.display='block';
+    document.getElementById('aiGenBtn').style.display='inline-flex';
+  }
 }
 
 /* ══ INIT ══ */
