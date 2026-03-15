@@ -823,4 +823,290 @@ function exportXLSX(){
   // Styles
   const catColors=['1e3a5f','163450','0d2840','1a3d6b','0f2d5a','162e4d','0e2040'];
   const R=XLSX.utils.encode_cell;
-  const fillG='166534',fillY='854d0e',fillR='
+  const fillG='166534',fillY='854d0e',fillR='7f1d1d',fillN='1e2d40';
+
+  // Row 0 category headers
+  let cIdx=2;
+  MATRIX.forEach((cat,ci)=>{
+    const cell=ws[R({r:0,c:cIdx})];
+    if(cell) cell.s={font:{bold:true,color:{rgb:'FFFFFF'},name:'Arial',sz:10},fill:{fgColor:{rgb:catColors[ci%7]},patternType:'solid'},alignment:{horizontal:'center',vertical:'center',wrapText:true}};
+    cIdx+=cat.subs.length*2;
+  });
+  // area + name header
+  ['A1','B1'].forEach(addr=>{const c=ws[addr];if(c)c.s={font:{bold:true,color:{rgb:'FFFFFF'},name:'Arial',sz:10},fill:{fgColor:{rgb:'060b14'},patternType:'solid'},alignment:{horizontal:'center',vertical:'center'}};});
+
+  // Row 1 sub-topic headers
+  for(let c=0;c<numCols;c++){
+    const cell=ws[R({r:1,c})];
+    if(cell) cell.s={font:{bold:true,color:{rgb:'FFFFFF'},name:'Arial',sz:9},fill:{fgColor:{rgb:'2a4a6a'},patternType:'solid'},alignment:{horizontal:'center',vertical:'center',wrapText:true}};
+  }
+
+  // Row 2 hints
+  for(let c=0;c<numCols;c++){
+    const cell=ws[R({r:2,c})];
+    if(cell) cell.s={font:{italic:true,color:{rgb:'6a8aaa'},name:'Arial',sz:8},fill:{fgColor:{rgb:'0a1828'},patternType:'solid'},alignment:{horizontal:'left',vertical:'top',wrapText:true}};
+  }
+
+  // Data rows (start at row index 4)
+  const dataStart=4;
+  for(let ri=0;ri<sorted.length;ri++){
+    const r=dataStart+ri;
+    // Area cell
+    const ac=ws[R({r,c:0})];
+    if(ac) ac.s={font:{bold:true,color:{rgb:'E0E8F0'},name:'Arial',sz:9},fill:{fgColor:{rgb:'0d1e33'},patternType:'solid'},alignment:{horizontal:'left',vertical:'center'}};
+    // Name cell
+    const nc=ws[R({r,c:1})];
+    if(nc) nc.s={font:{color:{rgb:'94b4cc'},name:'Arial',sz:9},fill:{fgColor:{rgb:'0d1e33'},patternType:'solid'},alignment:{horizontal:'left',vertical:'center'}};
+    // Status + idea cells
+    let c=2;
+    allSubs.forEach(()=>{
+      const sc=ws[R({r,c})];
+      if(sc){
+        const v=sc.v||'';
+        const bg=v.includes('✅')?fillG:v.includes('🟡')?fillY:v.includes('❌')?fillR:fillN;
+        sc.s={font:{bold:v!=='–',color:{rgb:'FFFFFF'},name:'Arial',sz:9},fill:{fgColor:{rgb:bg},patternType:'solid'},alignment:{horizontal:'center',vertical:'center'}};
+      }
+      const ic=ws[R({r,c:c+1})];
+      if(ic) ic.s={font:{color:{rgb:'C0D8E8'},name:'Arial',sz:9},fill:{fgColor:{rgb:'0d1824'},patternType:'solid'},alignment:{horizontal:'left',vertical:'top',wrapText:true}};
+      c+=2;
+    });
+  }
+
+  XLSX.utils.book_append_sheet(wb,ws,'Zirkularitäts-Matrix');
+
+  // Sheet 2: raw flat data
+  const raw=[['Vorname','Nachname','Produktbereich','Kategorie','Unterthema','Status','Idee','Zeit']];
+  submissions.forEach(s=>raw.push([s.vorname||'',s.nachname||'',s.area,s.catLabel||'',s.subLabel||'',s.status,s.idea||'',s.time]));
+  const ws2=XLSX.utils.aoa_to_sheet(raw);
+  ws2['!cols']=[{wch:14},{wch:16},{wch:28},{wch:28},{wch:30},{wch:14},{wch:50},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,ws2,'Rohdaten');
+
+  XLSX.writeFile(wb,'Zirkularitaet_Summit_Matrix.xlsx');
+}
+
+function deletePerson(sessionId){
+  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
+  submissions = submissions.filter(s => {
+    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
+    return key !== sessionId;
+  });
+  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+  syncToCloud();
+  refreshDisplay();
+  renderAdmin();
+}
+
+function clearAll(){
+  if(!confirm('Wirklich alle Eingaben löschen?'))return;
+  submissions=[];
+  localStorage.removeItem('zirk_v3');
+  pushToCloud([]);
+  refreshDisplay();renderAdmin();
+}
+
+/* ══ NAV ══ */
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='dv')refreshDisplay();
+  if(id==='av'&&!adminUnlocked){
+    document.getElementById('adminLock').style.display='flex';
+    document.getElementById('adminPanel').style.display='none';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   JSONBIN CONFIG — free real-time sync, no account needed
+   ────────────────────────────────────────────────────────────
+   HOW TO SET UP (2 minutes):
+   1. Go to https://jsonbin.io  → click "Sign Up Free"
+   2. After login → click "CREATE BIN"
+   3. Paste this as the bin content:  []
+   4. Click "CREATE" → copy the BIN ID from the URL
+      (looks like: 6650f3e9acd3cb34a836e123)
+   5. Go to API Keys (top menu) → copy your Access Key
+   6. Paste both below and re-upload index.html to GitHub
+═══════════════════════════════════════════════════════════════ */
+const JSONBIN_ID  = '69b2e5ebc3097a1dd51cfc14';
+const JSONBIN_KEY = '$2a$10$rm/U1kJKLBu3VgxKZQsx7.kbyvQPRDSjVqi382NUN1WoKfm1G801m';
+
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+
+/* ══ SYNC ══ */
+async function syncToCloud(){
+  // push new submissions to JSONBin
+  if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
+  try {
+    // fetch latest first to merge
+    const latest = await fetchRemote();
+    const merged = mergeSessions(latest, submissions);
+    submissions = merged;
+    localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+    await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY,
+        'X-Bin-Versioning': 'false'
+      },
+      body: JSON.stringify(Array.isArray(merged) ? merged : [])
+    });
+  } catch(e){ console.warn('Sync failed:', e); }
+}
+
+async function fetchRemote(){
+  if(!JSONBIN_ID||!JSONBIN_KEY) return submissions;
+  try {
+    const res = await fetch(JSONBIN_URL + '/latest', {
+      headers: {'X-Master-Key': JSONBIN_KEY}
+    });
+    const data = await res.json();
+    // Handle both formats: plain array [] or object {submissions:[]}
+    if(Array.isArray(data.record)) return data.record;
+    if(data.record && Array.isArray(data.record.submissions)) return data.record.submissions;
+    return [];
+  } catch(e){ console.warn('fetchRemote error:', e); return submissions; }
+}
+
+function mergeSessions(a, b){
+  const map = {};
+  [...(Array.isArray(a)?a:[]), ...(Array.isArray(b)?b:[])].forEach(s => {
+    map[s.sessionId + s.sub] = s;
+  });
+  return Object.values(map);
+}
+
+function offlineSync(){
+  // No JSONBin configured — localStorage only (same device)
+  const s = JSON.parse(localStorage.getItem('zirk_v3')||'[]');
+  if(s.length !== submissions.length){
+    submissions = s;
+    refreshDisplay();
+    if(adminUnlocked) renderAdmin();
+  }
+}
+
+async function pollCloud(){
+  if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
+  try {
+    const latest = await fetchRemote();
+    const latestKey = JSON.stringify(latest.map(s=>s.sessionId+s.sub).sort());
+    const currentKey = JSON.stringify(submissions.map(s=>s.sessionId+s.sub).sort());
+    if(latestKey !== currentKey){
+      submissions = latest;
+      localStorage.setItem('zirk_v3', JSON.stringify(submissions));
+      refreshDisplay();
+      if(adminUnlocked) renderAdmin();
+      const countEl = document.getElementById('dvQrCount');
+      if(countEl) countEl.textContent = getPersons().length;
+    }
+  } catch(e){ console.warn('Poll failed:', e); }
+}
+
+/* ══ URL ROUTING ══ */
+function initRouting(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('view')==='form'){
+    // Phone user — hide FAB nav, show welcome splash
+    document.getElementById('fabNav').style.display='none';
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('welcome').style.display='flex';
+  } else {
+    showView('dv');
+  }
+}
+
+function startForm(){
+  document.getElementById('welcome').style.display='none';
+  showView('fv');
+  initForm();
+}
+
+/* ══ QR CODE ══ */
+function initQR(){
+  const isLocal = location.protocol==='file:' || location.hostname==='localhost';
+  const formUrl = isLocal
+    ? 'https://alanjofy.github.io/zirkulaer-summit/?view=form' /* update if repo name changes */
+    : location.origin + location.pathname + '?view=form';
+  const urlEl = document.getElementById('qrUrl');
+  if(urlEl) urlEl.textContent = isLocal ? '⚠️ Lokal — nach GitHub Upload wird echte URL angezeigt' : formUrl;
+  const container = document.getElementById('qrCanvas');
+  if(container && typeof QRCode !== 'undefined'){
+    container.innerHTML='';
+    new QRCode(container,{text:formUrl,width:100,height:100,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  }
+  const countEl = document.getElementById('dvQrCount');
+  if(countEl) countEl.textContent = getPersons().length;
+}
+
+function deletePerson(sessionId){
+  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
+  submissions=submissions.filter(s=>{const key=s.sessionId||(s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);return key!==sessionId;});
+  localStorage.setItem('zirk_v3',JSON.stringify(submissions));
+  pushToCloud(submissions);refreshDisplay();renderAdmin();
+}
+async function pushToCloud(data){
+  if(!JSONBIN_ID||!JSONBIN_KEY) return;
+  try{await fetch(JSONBIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Versioning':'false'},body:JSON.stringify(Array.isArray(data)?data:[])});}
+  catch(e){console.warn('Push failed:',e);}
+}
+function switchTab(e,tabId){
+  document.querySelectorAll('.atab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  e.target.classList.add('active');
+  if(tabId==='tab-stats') renderStats();
+}
+function renderStats(){
+  const persons=getPersons(),answered=submissions.filter(s=>s.status!=='');
+  const g=answered.filter(s=>s.status==='green').length,y=answered.filter(s=>s.status==='yellow').length,r=answered.filter(s=>s.status==='red').length,total=answered.length;
+  const totalSubs=MATRIX.reduce((a,c)=>a+c.subs.length,0),complete=persons.filter(p=>p.rows.filter(r=>r.status!=='').length>=totalSubs).length;
+  document.getElementById('ssGrid').innerHTML=`
+    <div class="ss-card blue"><div class="ss-big blue">${persons.length}</div><div class="ss-lbl">Teilnehmer</div><div class="ss-sub">${complete} vollständig</div></div>
+    <div class="ss-card green"><div class="ss-big green">${g}</div><div class="ss-lbl">🟢 Ja / Umgesetzt</div><div class="ss-sub">${total?Math.round(g/total*100):0}%</div></div>
+    <div class="ss-card yellow"><div class="ss-big yellow">${y}</div><div class="ss-lbl">🟡 In Planung</div><div class="ss-sub">${total?Math.round(y/total*100):0}%</div></div>
+    <div class="ss-card red"><div class="ss-big red">${r}</div><div class="ss-lbl">🔴 Nein / Fehlt</div><div class="ss-sub">${total?Math.round(r/total*100):0}%</div></div>`;
+  function donutSVG(gv,yv,rv){const tot=gv+yv+rv||1,R=50,cx=65,cy=65,circ=2*Math.PI*R,arc=(p,o)=>`stroke-dasharray:${p/100*circ} ${circ};stroke-dashoffset:-${o/100*circ}`,gp=gv/tot*100,yp=yv/tot*100,rp=rv/tot*100;return `<svg width="130" height="130" viewBox="0 0 130 130"><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="var(--s2)" stroke-width="18"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#4ade80" stroke-width="18" stroke-linecap="round" style="${arc(gp,0)}" transform="rotate(-90 ${cx} ${cy})"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fbbf24" stroke-width="18" stroke-linecap="round" style="${arc(yp,gp)}" transform="rotate(-90 ${cx} ${cy})"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#f87171" stroke-width="18" stroke-linecap="round" style="${arc(rp,gp+yp)}" transform="rotate(-90 ${cx} ${cy})"/><text x="${cx}" y="${cy-6}" text-anchor="middle" fill="var(--tx)" font-size="18" font-weight="800" font-family="Syne,sans-serif">${gv+yv+rv}</text><text x="${cx}" y="${cy+12}" text-anchor="middle" fill="var(--mu)" font-size="9">Antworten</text></svg>`;}
+  const catBars=MATRIX.map(cat=>{const cs=answered.filter(s=>s.cat===cat.id),cg=cs.filter(s=>s.status==='green').length,cy=cs.filter(s=>s.status==='yellow').length,cr=cs.filter(s=>s.status==='red').length,ct=cs.length||1;return `<div class="cb-row"><div class="cb-name" title="${cat.title}">${cat.emoji} ${cat.title}</div><div class="cb-track"><div class="cb-g" style="width:${Math.round(cg/ct*100)}%"></div><div class="cb-y" style="width:${Math.round(cy/ct*100)}%"></div><div class="cb-r" style="width:${Math.round(cr/ct*100)}%"></div></div><div class="cb-pct">${Math.round(cg/ct*100)}%</div></div>`;}).join('');
+  document.getElementById('chartsRow').innerHTML=`<div class="chart-card"><div class="chart-title">Gesamtverteilung</div><div class="donut-wrap">${donutSVG(g,y,r)}<div class="donut-legend"><div class="dleg-row"><div class="dleg-dot" style="background:#4ade80"></div><span class="dleg-label">Ja</span><span class="dleg-val">${g}</span><span class="dleg-pct">${total?Math.round(g/total*100):0}%</span></div><div class="dleg-row"><div class="dleg-dot" style="background:#fbbf24"></div><span class="dleg-label">In Planung</span><span class="dleg-val">${y}</span><span class="dleg-pct">${total?Math.round(y/total*100):0}%</span></div><div class="dleg-row"><div class="dleg-dot" style="background:#f87171"></div><span class="dleg-label">Nein</span><span class="dleg-val">${r}</span><span class="dleg-pct">${total?Math.round(r/total*100):0}%</span></div></div></div></div><div class="chart-card"><div class="chart-title">🟢 Ja-Rate pro Kategorie</div><div class="cat-bars">${catBars}</div></div>`;
+  const subHtml=MATRIX.map(cat=>{const rows=cat.subs.map(sub=>{const ss=answered.filter(s=>s.cat===cat.id&&s.sub===sub.id),sg=ss.filter(s=>s.status==='green').length,sy=ss.filter(s=>s.status==='yellow').length,sr=ss.filter(s=>s.status==='red').length,st=ss.length||1,top=sg>=sy&&sg>=sr?'🟢 Ja':sy>=sg&&sy>=sr?'🟡 In Planung':'🔴 Nein';return `<tr><td style="color:var(--tx);font-weight:600">${sub.label}</td><td><div class="mini-bar"><div class="mini-g" style="width:${Math.round(sg/st*100)}%"></div><div class="mini-y" style="width:${Math.round(sy/st*100)}%"></div><div class="mini-r" style="width:${Math.round(sr/st*100)}%"></div></div></td><td style="color:#4ade80;font-weight:700">${sg}</td><td style="color:#fbbf24;font-weight:700">${sy}</td><td style="color:#f87171;font-weight:700">${sr}</td><td style="color:var(--mu);font-size:11px">${top}</td></tr>`;}).join('');return `<div style="background:var(--s1);border:1px solid var(--bo);border-radius:16px;overflow:hidden"><div style="padding:14px 20px;border-bottom:1px solid var(--bo);font-family:Syne,sans-serif;font-size:13px;font-weight:700;">${cat.emoji} ${cat.title}</div><table class="sub-table"><thead><tr><th>Thema</th><th style="width:120px">Verteilung</th><th>🟢</th><th>🟡</th><th>🔴</th><th>Tendenz</th></tr></thead><tbody>${rows}</tbody></table></div>`;}).join('');
+  document.getElementById('subDetailWrap').innerHTML=`<div style="display:flex;flex-direction:column;gap:12px">${subHtml}</div>`;
+}
+function generateAISummary(){
+  const persons=getPersons();
+  if(!persons.length){alert('Noch keine Daten vorhanden.');return;}
+  document.getElementById('aiGenBtn').style.display='none';
+  document.getElementById('aiLoading').style.display='flex';
+  document.getElementById('aiBody').style.display='none';
+  setTimeout(()=>{
+    const answered=submissions.filter(s=>s.status!==''),g=answered.filter(s=>s.status==='green').length,y=answered.filter(s=>s.status==='yellow').length,r=answered.filter(s=>s.status==='red').length,total=answered.length||1;
+    const gPct=Math.round(g/total*100),yPct=Math.round(y/total*100),rPct=Math.round(r/total*100);
+    const totalSubs=MATRIX.reduce((a,c)=>a+c.subs.length,0),complete=persons.filter(p=>p.rows.filter(r=>r.status!=='').length>=totalSubs).length;
+    const catScores=MATRIX.map(cat=>{const cs=answered.filter(s=>s.cat===cat.id),cg=cs.filter(s=>s.status==='green').length,cy=cs.filter(s=>s.status==='yellow').length,cr=cs.filter(s=>s.status==='red').length,ct=cs.length||1,ideas=cs.filter(s=>s.idea&&s.idea.length>5).map(s=>s.idea).slice(0,2);return {cat,cg,cy,cr,ct,score:Math.round(cg/ct*100),ideas};}).sort((a,b)=>b.score-a.score);
+    const strengths=catScores.slice(0,3),weaknesses=[...catScores].sort((a,b)=>a.score-b.score).slice(0,3);
+    const overall=gPct>=60?`Lindner zeigt eine <strong>starke Positionierung</strong> — ${gPct}% positiv bewertet.`:gPct>=40?`Lindner ist auf einem <strong>soliden Entwicklungspfad</strong> — ${gPct}% umgesetzt, ${yPct}% in Planung.`:`Lindner hat <strong>erhebliches Entwicklungspotenzial</strong> — ${gPct}% umgesetzt, ${yPct}% in Planung.`;
+    const sHtml=strengths.map((s,i)=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bo);"><div style="width:26px;height:26px;border-radius:50%;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#4ade80;flex-shrink:0;">${i+1}</div><div><strong>${s.cat.emoji} ${s.cat.title}</strong> — ${s.score}% Ja-Rate${s.ideas.length?`<br><span style="font-size:11px;color:var(--mu)">💬 "${s.ideas[0]}"</span>`:''}</div></div>`).join('');
+    const wHtml=weaknesses.map((s,i)=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bo);"><div style="width:26px;height:26px;border-radius:50%;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#f87171;flex-shrink:0;">${i+1}</div><div><strong>${s.cat.emoji} ${s.cat.title}</strong> — ${100-s.score}% Handlungsbedarf (${s.cr} Nein, ${s.cy} In Planung)</div></div>`).join('');
+    const rHtml=weaknesses.slice(0,3).map((s,i)=>`<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bo);"><div style="width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;">${i+1}</div><div style="font-size:13px;color:var(--tx);">${['Priorisierung von','Arbeitsgruppe für','Quick-Wins in'][i]} <strong>${s.cat.title}</strong> ${['in der nächsten Strategierunde','einrichten — '+s.cy+' Themen bereits in Planung','identifizieren und Maßnahmen definieren'][i]}</div></div>`).join('');
+    const areas=[...new Set(persons.map(p=>p.area))].length;
+    document.getElementById('aiBody').innerHTML=`<div style="margin-bottom:16px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ac);margin-bottom:8px;">📊 Gesamtbild</div><p style="color:var(--tx);line-height:1.75;">${overall} <strong>${persons.length} Teilnehmer</strong> aus ${areas} Bereichen, ${complete} vollständig.</p><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><span style="padding:5px 12px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:100px;font-size:11px;font-weight:700;color:#4ade80;">🟢 ${gPct}% Ja</span><span style="padding:5px 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);border-radius:100px;font-size:11px;font-weight:700;color:#fbbf24;">🟡 ${yPct}% In Planung</span><span style="padding:5px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);border-radius:100px;font-size:11px;font-weight:700;color:#f87171;">🔴 ${rPct}% Nein</span></div></div><div style="margin-bottom:16px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#4ade80;margin-bottom:8px;">💪 Top Stärken</div>${sHtml}</div><div style="margin-bottom:16px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#f87171;margin-bottom:8px;">⚠️ Handlungsbedarf</div>${wHtml}</div><div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ac);margin-bottom:8px;">🎯 Empfohlene nächste Schritte</div>${rHtml}</div>`;
+    document.getElementById('aiBody').style.display='block';
+    document.getElementById('aiLoading').style.display='none';
+    document.getElementById('aiGenBtn').textContent='🔄 Zusammenfassung neu generieren';
+    document.getElementById('aiGenBtn').style.display='inline-flex';
+  },800);
+}
+
+/* ══ INIT ══ */
+buildGrid();
+initRouting();
+initQR();
+pollCloud();
+setInterval(()=>{
+  pollCloud();
+  const countEl=document.getElementById('dvQrCount');
+  if(countEl) countEl.textContent=getPersons().length;
+},5000);
+</script>
+</body>
+</html>
