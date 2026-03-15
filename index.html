@@ -148,8 +148,6 @@ tr:last-child td{border-bottom:none;}
 .view-btn:hover{background:rgba(14,165,233,.25);}
 .del-btn{padding:5px 10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;transition:background .2s;}
 .del-btn:hover{background:rgba(248,113,113,.28);}
-.del-btn{padding:5px 10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;transition:background .2s;}
-.del-btn:hover{background:rgba(248,113,113,.28);}
 .eadm{padding:60px;text-align:center;color:var(--mu);font-size:14px;}
 
 /* ── MODAL ── */
@@ -198,8 +196,6 @@ tr:last-child td{border-bottom:none;}
 .atab.active{background:var(--s1);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.4);}
 .atab-panel{display:none;}
 .atab-panel.active{display:flex;flex-direction:column;gap:20px;}
-
-/* ── STATS ── */
 .ss-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 .ss-card{background:var(--s1);border:1px solid var(--bo);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;}
 .ss-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
@@ -214,31 +210,24 @@ tr:last-child td{border-bottom:none;}
 .ss-big.red{background:linear-gradient(120deg,#f87171,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .ss-lbl{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;}
 .ss-sub{font-size:12px;color:var(--mu);}
-
-/* Charts row */
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .chart-card{background:var(--s1);border:1px solid var(--bo);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;gap:16px;}
 .chart-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);}
 .donut-wrap{display:flex;align-items:center;gap:24px;}
-.donut-svg{flex-shrink:0;}
 .donut-legend{display:flex;flex-direction:column;gap:10px;flex:1;}
 .dleg-row{display:flex;align-items:center;gap:10px;font-size:12px;}
 .dleg-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
 .dleg-label{flex:1;color:var(--mu);}
 .dleg-val{font-weight:700;color:var(--tx);}
 .dleg-pct{font-size:11px;color:var(--mu);}
-
-/* Category bars */
 .cat-bars{display:flex;flex-direction:column;gap:8px;}
 .cb-row{display:flex;align-items:center;gap:12px;}
 .cb-name{font-size:11px;color:var(--mu);width:180px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cb-track{flex:1;height:20px;background:var(--s2);border-radius:6px;overflow:hidden;display:flex;}
-.cb-g{background:rgba(74,222,128,.8);height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);}
-.cb-y{background:rgba(251,191,36,.8);height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);}
-.cb-r{background:rgba(248,113,113,.8);height:100%;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.cb-g{background:rgba(74,222,128,.8);height:100%;transition:width .8s;}
+.cb-y{background:rgba(251,191,36,.8);height:100%;transition:width .8s;}
+.cb-r{background:rgba(248,113,113,.8);height:100%;transition:width .8s;}
 .cb-pct{font-size:10px;font-weight:700;color:#4ade80;width:36px;text-align:right;flex-shrink:0;}
-
-/* AI Summary */
 .ai-summary{background:var(--s1);border:1px solid var(--bo);border-radius:16px;padding:22px 26px;display:flex;flex-direction:column;gap:14px;}
 .ai-hdr{display:flex;align-items:center;gap:12px;}
 .ai-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
@@ -253,8 +242,6 @@ tr:last-child td{border-bottom:none;}
 @keyframes dotpulse{0%,80%,100%{opacity:.3}40%{opacity:1}}
 .ai-gen-btn{align-self:flex-start;padding:9px 20px;background:linear-gradient(120deg,#0ea5e9,#6366f1);border:none;border-radius:100px;color:white;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;}
 .ai-gen-btn:hover{opacity:.85;}
-
-/* Sub detail table */
 .sub-table{width:100%;border-collapse:collapse;font-size:12px;}
 .sub-table th{padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--mu);border-bottom:1px solid var(--bo);font-weight:700;}
 .sub-table td{padding:9px 12px;border-bottom:1px solid rgba(26,45,69,.5);vertical-align:middle;}
@@ -359,16 +346,13 @@ tr:last-child td{border-bottom:none;}
     </div>
     <div class="admin-tabs">
       <button class="atab active" onclick="switchTab(event,'tab-people')">👥 Teilnehmer</button>
-      <button class="atab" onclick="switchTab(event,'tab-stats')">📊 Statistik & KI-Zusammenfassung</button>
+      <button class="atab" onclick="switchTab(event,'tab-stats')">📊 Statistik & Auswertung</button>
     </div>
     <div class="atab-panel active" id="tab-people">
       <div class="adtw">
         <div class="eadm" id="adEmpty">Noch keine Eingaben vorhanden.</div>
         <table id="adTable" style="display:none">
-          <thead><tr>
-            <th>#</th><th>Name</th><th>Produktbereich</th>
-            <th>Uhrzeit</th><th>Antworten</th><th>🟢 / 🟡 / 🔴</th><th></th>
-          </tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Produktbereich</th><th>Uhrzeit</th><th>Antworten</th><th>🟢 / 🟡 / 🔴</th><th></th></tr></thead>
           <tbody id="adBody"></tbody>
         </table>
       </div>
@@ -378,15 +362,12 @@ tr:last-child td{border-bottom:none;}
       <div class="charts-row" id="chartsRow"></div>
       <div class="ai-summary" id="aiSummary">
         <div class="ai-hdr">
-          <div class="ai-icon">🤖</div>
-          <div><div class="ai-title">KI-Zusammenfassung</div><div class="ai-subtitle">Automatische Auswertung der Teilnehmerantworten</div></div>
+          <div class="ai-icon">📊</div>
+          <div><div class="ai-title">Automatische Zusammenfassung</div><div class="ai-subtitle">Auswertung der Teilnehmerantworten</div></div>
         </div>
         <div class="ai-body" id="aiBody" style="display:none"></div>
-        <div class="ai-loading" id="aiLoading" style="display:none">
-          <span>Analyse läuft</span>
-          <span class="ai-dots"><span>.</span><span>.</span><span>.</span></span>
-        </div>
-        <button class="ai-gen-btn" id="aiGenBtn" onclick="generateAISummary()">✨ KI-Zusammenfassung generieren</button>
+        <div class="ai-loading" id="aiLoading" style="display:none"><span>Auswertung läuft</span><span class="ai-dots"><span>.</span><span>.</span><span>.</span></span></div>
+        <button class="ai-gen-btn" id="aiGenBtn" onclick="generateAISummary()">📋 Zusammenfassung generieren</button>
       </div>
       <div id="subDetailWrap"></div>
     </div>
@@ -842,456 +823,4 @@ function exportXLSX(){
   // Styles
   const catColors=['1e3a5f','163450','0d2840','1a3d6b','0f2d5a','162e4d','0e2040'];
   const R=XLSX.utils.encode_cell;
-  const fillG='166534',fillY='854d0e',fillR='7f1d1d',fillN='1e2d40';
-
-  // Row 0 category headers
-  let cIdx=2;
-  MATRIX.forEach((cat,ci)=>{
-    const cell=ws[R({r:0,c:cIdx})];
-    if(cell) cell.s={font:{bold:true,color:{rgb:'FFFFFF'},name:'Arial',sz:10},fill:{fgColor:{rgb:catColors[ci%7]},patternType:'solid'},alignment:{horizontal:'center',vertical:'center',wrapText:true}};
-    cIdx+=cat.subs.length*2;
-  });
-  // area + name header
-  ['A1','B1'].forEach(addr=>{const c=ws[addr];if(c)c.s={font:{bold:true,color:{rgb:'FFFFFF'},name:'Arial',sz:10},fill:{fgColor:{rgb:'060b14'},patternType:'solid'},alignment:{horizontal:'center',vertical:'center'}};});
-
-  // Row 1 sub-topic headers
-  for(let c=0;c<numCols;c++){
-    const cell=ws[R({r:1,c})];
-    if(cell) cell.s={font:{bold:true,color:{rgb:'FFFFFF'},name:'Arial',sz:9},fill:{fgColor:{rgb:'2a4a6a'},patternType:'solid'},alignment:{horizontal:'center',vertical:'center',wrapText:true}};
-  }
-
-  // Row 2 hints
-  for(let c=0;c<numCols;c++){
-    const cell=ws[R({r:2,c})];
-    if(cell) cell.s={font:{italic:true,color:{rgb:'6a8aaa'},name:'Arial',sz:8},fill:{fgColor:{rgb:'0a1828'},patternType:'solid'},alignment:{horizontal:'left',vertical:'top',wrapText:true}};
-  }
-
-  // Data rows (start at row index 4)
-  const dataStart=4;
-  for(let ri=0;ri<sorted.length;ri++){
-    const r=dataStart+ri;
-    // Area cell
-    const ac=ws[R({r,c:0})];
-    if(ac) ac.s={font:{bold:true,color:{rgb:'E0E8F0'},name:'Arial',sz:9},fill:{fgColor:{rgb:'0d1e33'},patternType:'solid'},alignment:{horizontal:'left',vertical:'center'}};
-    // Name cell
-    const nc=ws[R({r,c:1})];
-    if(nc) nc.s={font:{color:{rgb:'94b4cc'},name:'Arial',sz:9},fill:{fgColor:{rgb:'0d1e33'},patternType:'solid'},alignment:{horizontal:'left',vertical:'center'}};
-    // Status + idea cells
-    let c=2;
-    allSubs.forEach(()=>{
-      const sc=ws[R({r,c})];
-      if(sc){
-        const v=sc.v||'';
-        const bg=v.includes('✅')?fillG:v.includes('🟡')?fillY:v.includes('❌')?fillR:fillN;
-        sc.s={font:{bold:v!=='–',color:{rgb:'FFFFFF'},name:'Arial',sz:9},fill:{fgColor:{rgb:bg},patternType:'solid'},alignment:{horizontal:'center',vertical:'center'}};
-      }
-      const ic=ws[R({r,c:c+1})];
-      if(ic) ic.s={font:{color:{rgb:'C0D8E8'},name:'Arial',sz:9},fill:{fgColor:{rgb:'0d1824'},patternType:'solid'},alignment:{horizontal:'left',vertical:'top',wrapText:true}};
-      c+=2;
-    });
-  }
-
-  XLSX.utils.book_append_sheet(wb,ws,'Zirkularitäts-Matrix');
-
-  // Sheet 2: raw flat data
-  const raw=[['Vorname','Nachname','Produktbereich','Kategorie','Unterthema','Status','Idee','Zeit']];
-  submissions.forEach(s=>raw.push([s.vorname||'',s.nachname||'',s.area,s.catLabel||'',s.subLabel||'',s.status,s.idea||'',s.time]));
-  const ws2=XLSX.utils.aoa_to_sheet(raw);
-  ws2['!cols']=[{wch:14},{wch:16},{wch:28},{wch:28},{wch:30},{wch:14},{wch:50},{wch:10}];
-  XLSX.utils.book_append_sheet(wb,ws2,'Rohdaten');
-
-  XLSX.writeFile(wb,'Zirkularitaet_Summit_Matrix.xlsx');
-}
-
-function deletePerson(sessionId){
-  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
-  submissions = submissions.filter(s => {
-    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
-    return key !== sessionId;
-  });
-  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-  syncToCloud();
-  refreshDisplay();
-  renderAdmin();
-}
-
-function clearAll(){
-  if(!confirm('Wirklich alle Eingaben löschen?'))return;
-  submissions=[];
-  localStorage.removeItem('zirk_v3');
-  pushToCloud([]);
-  refreshDisplay();
-  renderAdmin();
-}
-
-/* ══ NAV ══ */
-function showView(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(id==='dv')refreshDisplay();
-  if(id==='av'&&!adminUnlocked){
-    document.getElementById('adminLock').style.display='flex';
-    document.getElementById('adminPanel').style.display='none';
-  }
-}
-
-/* ══════════════════════════════════════════════════════════════
-   JSONBIN CONFIG — free real-time sync, no account needed
-   ────────────────────────────────────────────────────────────
-   HOW TO SET UP (2 minutes):
-   1. Go to https://jsonbin.io  → click "Sign Up Free"
-   2. After login → click "CREATE BIN"
-   3. Paste this as the bin content:  []
-   4. Click "CREATE" → copy the BIN ID from the URL
-      (looks like: 6650f3e9acd3cb34a836e123)
-   5. Go to API Keys (top menu) → copy your Access Key
-   6. Paste both below and re-upload index.html to GitHub
-═══════════════════════════════════════════════════════════════ */
-const JSONBIN_ID  = '69b2e5ebc3097a1dd51cfc14';
-const JSONBIN_KEY = '$2a$10$rm/U1kJKLBu3VgxKZQsx7.kbyvQPRDSjVqi382NUN1WoKfm1G801m';
-
-const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
-
-/* ══ SYNC ══ */
-async function syncToCloud(){
-  // push new submissions to JSONBin
-  if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
-  try {
-    // fetch latest first to merge
-    const latest = await fetchRemote();
-    const merged = mergeSessions(latest, submissions);
-    submissions = merged;
-    localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-    await fetch(JSONBIN_URL, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_KEY,
-        'X-Bin-Versioning': 'false'
-      },
-      body: JSON.stringify(Array.isArray(merged) ? merged : [])
-    });
-  } catch(e){ console.warn('Sync failed:', e); }
-}
-
-async function fetchRemote(){
-  if(!JSONBIN_ID||!JSONBIN_KEY) return submissions;
-  try {
-    const res = await fetch(JSONBIN_URL + '/latest', {
-      headers: {'X-Master-Key': JSONBIN_KEY}
-    });
-    const data = await res.json();
-    // Handle both formats: plain array [] or object {submissions:[]}
-    if(Array.isArray(data.record)) return data.record;
-    if(data.record && Array.isArray(data.record.submissions)) return data.record.submissions;
-    return [];
-  } catch(e){ console.warn('fetchRemote error:', e); return submissions; }
-}
-
-function mergeSessions(a, b){
-  const map = {};
-  [...(Array.isArray(a)?a:[]), ...(Array.isArray(b)?b:[])].forEach(s => {
-    map[s.sessionId + s.sub] = s;
-  });
-  return Object.values(map);
-}
-
-function offlineSync(){
-  // No JSONBin configured — localStorage only (same device)
-  const s = JSON.parse(localStorage.getItem('zirk_v3')||'[]');
-  if(s.length !== submissions.length){
-    submissions = s;
-    refreshDisplay();
-    if(adminUnlocked) renderAdmin();
-  }
-}
-
-async function pollCloud(){
-  if(!JSONBIN_ID||!JSONBIN_KEY){ offlineSync(); return; }
-  try {
-    const latest = await fetchRemote();
-    const latestKey = JSON.stringify(latest.map(s=>s.sessionId+s.sub).sort());
-    const currentKey = JSON.stringify(submissions.map(s=>s.sessionId+s.sub).sort());
-    if(latestKey !== currentKey){
-      submissions = latest;
-      localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-      refreshDisplay();
-      if(adminUnlocked){renderAdmin();if(document.getElementById('tab-stats')?.classList.contains('active'))renderStats();}
-      const countEl = document.getElementById('dvQrCount');
-      if(countEl) countEl.textContent = getPersons().length;
-    }
-  } catch(e){ console.warn('Poll failed:', e); }
-}
-
-/* ══ URL ROUTING ══ */
-function initRouting(){
-  const params=new URLSearchParams(window.location.search);
-  if(params.get('view')==='form'){
-    // Phone user — hide FAB nav, show welcome splash
-    document.getElementById('fabNav').style.display='none';
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById('welcome').style.display='flex';
-  } else {
-    showView('dv');
-  }
-}
-
-function startForm(){
-  document.getElementById('welcome').style.display='none';
-  showView('fv');
-  initForm();
-}
-
-/* ══ QR CODE ══ */
-function initQR(){
-  const isLocal = location.protocol==='file:' || location.hostname==='localhost';
-  const formUrl = isLocal
-    ? 'https://alanjofy.github.io/zirkulaer-summit/?view=form' /* update if repo name changes */
-    : location.origin + location.pathname + '?view=form';
-  const urlEl = document.getElementById('qrUrl');
-  if(urlEl) urlEl.textContent = isLocal ? '⚠️ Lokal — nach GitHub Upload wird echte URL angezeigt' : formUrl;
-  const container = document.getElementById('qrCanvas');
-  if(container && typeof QRCode !== 'undefined'){
-    container.innerHTML='';
-    new QRCode(container,{text:formUrl,width:100,height:100,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-  }
-  const countEl = document.getElementById('dvQrCount');
-  if(countEl) countEl.textContent = getPersons().length;
-}
-
-
-function deletePerson(sessionId){
-  if(!confirm('Diesen Eintrag wirklich löschen?')) return;
-  submissions = submissions.filter(s => {
-    const key = s.sessionId || (s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);
-    return key !== sessionId;
-  });
-  localStorage.setItem('zirk_v3', JSON.stringify(submissions));
-  pushToCloud(submissions);
-  refreshDisplay();
-  renderAdmin();
-}
-
-async function pushToCloud(data){
-  if(!JSONBIN_ID||!JSONBIN_KEY) return;
-  try {
-    await fetch(JSONBIN_URL,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY,'X-Bin-Versioning':'false'},
-      body:JSON.stringify(Array.isArray(data)?data:[])
-    });
-  } catch(e){ console.warn('Push failed:',e); }
-}
-
-/* ══ ADMIN TABS ══ */
-function switchTab(e, tabId){
-  document.querySelectorAll('.atab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  e.target.classList.add('active');
-  if(tabId==='tab-stats') renderStats();
-}
-
-/* ══ STATS ══ */
-function renderStats(){
-  const persons = getPersons();
-  const answered = submissions.filter(s=>s.status!=='');
-  const g = answered.filter(s=>s.status==='green').length;
-  const y = answered.filter(s=>s.status==='yellow').length;
-  const r = answered.filter(s=>s.status==='red').length;
-  const total = answered.length;
-  const totalSubs = MATRIX.reduce((a,c)=>a+c.subs.length,0);
-  const complete = persons.filter(p=>p.rows.filter(r=>r.status!=='').length>=totalSubs).length;
-
-  // ── Summary cards ──
-  document.getElementById('ssGrid').innerHTML = `
-    <div class="ss-card blue">
-      <div class="ss-big blue">${persons.length}</div>
-      <div class="ss-lbl">Teilnehmer</div>
-      <div class="ss-sub">${complete} vollständig ausgefüllt</div>
-    </div>
-    <div class="ss-card green">
-      <div class="ss-big green">${g}</div>
-      <div class="ss-lbl">🟢 Ja / Umgesetzt</div>
-      <div class="ss-sub">${total?Math.round(g/total*100):0}% aller Antworten</div>
-    </div>
-    <div class="ss-card yellow">
-      <div class="ss-big yellow">${y}</div>
-      <div class="ss-lbl">🟡 In Planung</div>
-      <div class="ss-sub">${total?Math.round(y/total*100):0}% aller Antworten</div>
-    </div>
-    <div class="ss-card red">
-      <div class="ss-big red">${r}</div>
-      <div class="ss-lbl">🔴 Nein / Fehlt</div>
-      <div class="ss-sub">${total?Math.round(r/total*100):0}% aller Antworten</div>
-    </div>`;
-
-  // ── Donut chart (SVG) ──
-  function donutSVG(gv,yv,rv,size=130){
-    const tot=gv+yv+rv||1;
-    const gp=gv/tot*100, yp=yv/tot*100, rp=rv/tot*100;
-    const R=50, cx=65, cy=65, circ=2*Math.PI*R;
-    function arc(pct,offset){
-      return `stroke-dasharray:${pct/100*circ} ${circ};stroke-dashoffset:-${offset/100*circ}`;
-    }
-    return `<svg class="donut-svg" width="${size}" height="${size}" viewBox="0 0 130 130">
-      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="var(--s2)" stroke-width="18"/>
-      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#4ade80" stroke-width="18" stroke-linecap="round" style="${arc(gp,0)}" transform="rotate(-90 ${cx} ${cy})"/>
-      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fbbf24" stroke-width="18" stroke-linecap="round" style="${arc(yp,gp)}" transform="rotate(-90 ${cx} ${cy})"/>
-      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#f87171" stroke-width="18" stroke-linecap="round" style="${arc(rp,gp+yp)}" transform="rotate(-90 ${cx} ${cy})"/>
-      <text x="${cx}" y="${cy-6}" text-anchor="middle" fill="var(--tx)" font-size="18" font-weight="800" font-family="Syne,sans-serif">${total}</text>
-      <text x="${cx}" y="${cy+12}" text-anchor="middle" fill="var(--mu)" font-size="9">Antworten</text>
-    </svg>`;
-  }
-
-  // ── Category horizontal bars ──
-  const catBarsHtml = MATRIX.map(cat=>{
-    const cs = answered.filter(s=>s.cat===cat.id);
-    const cg=cs.filter(s=>s.status==='green').length;
-    const cy=cs.filter(s=>s.status==='yellow').length;
-    const cr=cs.filter(s=>s.status==='red').length;
-    const ct=cs.length||1;
-    const gpct=Math.round(cg/ct*100);
-    return `<div class="cb-row">
-      <div class="cb-name" title="${cat.title}">${cat.emoji} ${cat.title}</div>
-      <div class="cb-track">
-        <div class="cb-g" style="width:${Math.round(cg/ct*100)}%"></div>
-        <div class="cb-y" style="width:${Math.round(cy/ct*100)}%"></div>
-        <div class="cb-r" style="width:${Math.round(cr/ct*100)}%"></div>
-      </div>
-      <div class="cb-pct">${gpct}%</div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('chartsRow').innerHTML = `
-    <div class="chart-card">
-      <div class="chart-title">Gesamtverteilung der Antworten</div>
-      <div class="donut-wrap">
-        ${donutSVG(g,y,r)}
-        <div class="donut-legend">
-          <div class="dleg-row"><div class="dleg-dot" style="background:#4ade80"></div><span class="dleg-label">Ja / Umgesetzt</span><span class="dleg-val">${g}</span><span class="dleg-pct">${total?Math.round(g/total*100):0}%</span></div>
-          <div class="dleg-row"><div class="dleg-dot" style="background:#fbbf24"></div><span class="dleg-label">In Planung</span><span class="dleg-val">${y}</span><span class="dleg-pct">${total?Math.round(y/total*100):0}%</span></div>
-          <div class="dleg-row"><div class="dleg-dot" style="background:#f87171"></div><span class="dleg-label">Nein / Fehlt</span><span class="dleg-val">${r}</span><span class="dleg-pct">${total?Math.round(r/total*100):0}%</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">🟢 Ja-Rate pro Kategorie</div>
-      <div class="cat-bars">${catBarsHtml}</div>
-    </div>`;
-
-  // ── Sub-topic detail table per category ──
-  const subHtml = MATRIX.map(cat=>{
-    const rows = cat.subs.map(sub=>{
-      const ss = answered.filter(s=>s.cat===cat.id&&s.sub===sub.id);
-      const sg=ss.filter(s=>s.status==='green').length;
-      const sy=ss.filter(s=>s.status==='yellow').length;
-      const sr=ss.filter(s=>s.status==='red').length;
-      const st=ss.length||1;
-      const top = sg>=sy&&sg>=sr?'🟢 Ja':sy>=sg&&sy>=sr?'🟡 In Planung':'🔴 Nein';
-      return `<tr>
-        <td style="color:var(--tx);font-weight:600">${sub.label}</td>
-        <td><div class="mini-bar"><div class="mini-g" style="width:${Math.round(sg/st*100)}%"></div><div class="mini-y" style="width:${Math.round(sy/st*100)}%"></div><div class="mini-r" style="width:${Math.round(sr/st*100)}%"></div></div></td>
-        <td style="color:#4ade80;font-weight:700">${sg}</td>
-        <td style="color:#fbbf24;font-weight:700">${sy}</td>
-        <td style="color:#f87171;font-weight:700">${sr}</td>
-        <td style="color:var(--mu);font-size:11px">${top}</td>
-      </tr>`;
-    }).join('');
-    return `<div style="background:var(--s1);border:1px solid var(--bo);border-radius:16px;overflow:hidden;margin-bottom:0">
-      <div style="padding:14px 20px;border-bottom:1px solid var(--bo);font-family:Syne,sans-serif;font-size:13px;font-weight:700;">${cat.emoji} ${cat.title}</div>
-      <table class="sub-table">
-        <thead><tr><th>Thema</th><th style="width:120px">Verteilung</th><th>🟢</th><th>🟡</th><th>🔴</th><th>Tendenz</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
-  }).join('');
-  document.getElementById('subDetailWrap').innerHTML = `<div style="display:flex;flex-direction:column;gap:12px">${subHtml}</div>`;
-}
-
-/* ══ AI SUMMARY ══ */
-async function generateAISummary(){
-  const persons = getPersons();
-  if(!persons.length){ alert('Noch keine Daten vorhanden.'); return; }
-
-  document.getElementById('aiGenBtn').style.display='none';
-  document.getElementById('aiLoading').style.display='flex';
-  document.getElementById('aiBody').style.display='none';
-
-  // Build data summary for AI
-  const answered = submissions.filter(s=>s.status!=='');
-  const g=answered.filter(s=>s.status==='green').length;
-  const y=answered.filter(s=>s.status==='yellow').length;
-  const r=answered.filter(s=>s.status==='red').length;
-  const total=answered.length;
-
-  const catSummary = MATRIX.map(cat=>{
-    const cs=answered.filter(s=>s.cat===cat.id);
-    const cg=cs.filter(s=>s.status==='green').length;
-    const cy=cs.filter(s=>s.status==='yellow').length;
-    const cr=cs.filter(s=>s.status==='red').length;
-    const subDetail = cat.subs.map(sub=>{
-      const ss=answered.filter(s=>s.cat===cat.id&&s.sub===sub.id);
-      const sg=ss.filter(s=>s.status==='green').length;
-      const sy=ss.filter(s=>s.status==='yellow').length;
-      const sr=ss.filter(s=>s.status==='red').length;
-      const ideas=ss.filter(s=>s.idea).map(s=>s.idea).slice(0,3).join('; ');
-      return `  - ${sub.label}: ${sg}x Ja, ${sy}x In Planung, ${sr}x Nein${ideas?' | Kommentare: '+ideas:''}`;
-    }).join('\n');
-    return `${cat.emoji} ${cat.title} (${cg}x Ja, ${cy}x In Planung, ${cr}x Nein):\n${subDetail}`;
-  }).join('\n\n');
-
-  const prompt = `Du bist ein Experte für Kreislaufwirtschaft bei Lindner Group. Analysiere die folgenden Workshopdaten vom Zirkularität Summit 2026 und erstelle eine prägnante Zusammenfassung auf Deutsch.
-
-Teilnehmer: ${persons.length}
-Gesamtantworten: ${total} (🟢 ${g} Ja = ${total?Math.round(g/total*100):0}%, 🟡 ${y} In Planung = ${total?Math.round(y/total*100):0}%, 🔴 ${r} Nein = ${total?Math.round(r/total*100):0}%)
-
-Ergebnisse nach Kategorie:
-${catSummary}
-
-Bitte erstelle eine strukturierte Zusammenfassung mit:
-1. **Gesamtbild** (2-3 Sätze): Wo steht Lindner bei der Zirkularität?
-2. **Stärken** (Top 3 Bereiche mit hohem Ja-Anteil)
-3. **Handlungsbedarf** (Top 3 Bereiche mit hohem Nein/In-Planung-Anteil)
-4. **Empfehlungen** (3 konkrete nächste Schritte)
-
-Schreibe klar, professionell und umsetzbar. Verwende HTML-Tags für Formatierung (<strong> für wichtige Punkte).`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || 'Keine Antwort erhalten.';
-    document.getElementById('aiBody').innerHTML = text.replace(/\n/g,'<br>');
-    document.getElementById('aiBody').style.display='block';
-    document.getElementById('aiLoading').style.display='none';
-    document.getElementById('aiGenBtn').textContent='🔄 Neu generieren';
-    document.getElementById('aiGenBtn').style.display='inline-flex';
-  } catch(e){
-    document.getElementById('aiLoading').style.display='none';
-    document.getElementById('aiBody').innerHTML='<span style="color:var(--r)">Fehler beim Generieren. Bitte erneut versuchen.</span>';
-    document.getElementById('aiBody').style.display='block';
-    document.getElementById('aiGenBtn').style.display='inline-flex';
-  }
-}
-
-/* ══ INIT ══ */
-buildGrid();
-initRouting();
-initQR();
-pollCloud();
-setInterval(()=>{
-  pollCloud();
-  const countEl=document.getElementById('dvQrCount');
-  if(countEl) countEl.textContent=getPersons().length;
-},5000);
-</script>
-</body>
-</html>
+  const fillG='166534',fillY='854d0e',fillR='
