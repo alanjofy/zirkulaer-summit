@@ -1044,6 +1044,7 @@ function deletePerson(sessionId){
   submissions=submissions.filter(s=>{const key=s.sessionId||(s.vorname+'|'+s.nachname+'|'+s.area+'|'+s.time);return key!==sessionId;});
   localStorage.setItem('zirk_v3',JSON.stringify(submissions));
   pushToCloud(submissions);refreshDisplay();renderAdmin();
+  window._pollTimer=setInterval(()=>{pollCloud();const countEl=document.getElementById('dvQrCount');if(countEl)countEl.textContent=getPersons().length;},30000);
 }
 async function pushToCloud(data){
   if(!JSONBIN_ID||!JSONBIN_KEY) return;
@@ -1102,7 +1103,7 @@ buildGrid();
 initRouting();
 initQR();
 pollCloud();
-setInterval(()=>{
+window._pollTimer=setInterval(()=>{
   pollCloud();
   const countEl=document.getElementById('dvQrCount');
   if(countEl) countEl.textContent=getPersons().length;
